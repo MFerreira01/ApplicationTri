@@ -27,10 +27,12 @@ namespace ApplicationTri
         smcs.IImageBitmap m_changeBitDepthBitmap;
 
         private Bitmap capturedImage; // Variable pour stocker l'image capturée
+        private ClTraitementIm Histogramme;
 
         public Form1()
         {
             InitializeComponent();
+            Histogramme = new ClTraitementIm();
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -178,26 +180,25 @@ namespace ApplicationTri
                 pbImageCam.Image = capturedImage;
                 MessageBox.Show("Image capturée et stockée en mémoire !");
 
+/*                // Convertir l'image capturée en une image de type CImageNdg
+                CImageNdg ImNDG = ConvertirEnImageNDG(capturedImage);
 
-               /* // Calcul de l'histogramme
-                var histogramData = Histogramme(capturedImage);
+                // Appeler la méthode HistogrammeCS sur l'objet CImageNdg
+                ImNDG.HistogrammeCS(true);*/
 
-                // Affichage ou utilisation de l'histogramme
-                AfficherHistogramme(histogramData);*/
+                /* // Calcul de l'histogramme
+                 var histogramData = Histogramme(capturedImage);
+
+                 // Affichage ou utilisation de l'histogramme
+                 AfficherHistogramme(histogramData);*/
+
+                Histogramme.HistogrammeCS(true);
             }
             else
             {
                 MessageBox.Show("Échec de la capture de l'image.");
             }
         }
-
-/*
-        private void BoutonACQ_Click(object sender, EventArgs e)
-        {
-            *//*Bitmap capturedImage = CaptureImage();
-            pbImageCam.Image = capturedImage;*//*
-
-        }*/
 
         private void buttonInit_Click(object sender, EventArgs e)
         {
