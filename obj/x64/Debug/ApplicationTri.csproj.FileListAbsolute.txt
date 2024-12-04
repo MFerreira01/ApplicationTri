@@ -1,0 +1,11 @@
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\bin\x64\Debug\ApplicationTri.exe.config
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\bin\x64\Debug\ApplicationTri.exe
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\bin\x64\Debug\ApplicationTri.pdb
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.csproj.AssemblyReference.cache
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.Form1.resources
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.Properties.Resources.resources
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.csproj.GenerateResource.cache
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.csproj.CoreCompileInputs.cache
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.csproj.CopyComplete
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.exe
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.pdb
