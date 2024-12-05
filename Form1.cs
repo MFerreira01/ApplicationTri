@@ -228,15 +228,15 @@ namespace ApplicationTri
 
                 if(moyenneNDG>128)
                 {
-                    labelDécision.Text = "Décision : Objet blnac";
+                    labelDécision.Text = "Décision : Objet blANc";
                 }
                 else
                 {
                     labelDécision.Text = "Décision : Objet noir";
                 }
 
-                MessageBox.Show($"La moyenne des niveaux de gris est : {moyenneNDG}");
-
+/*                MessageBox.Show($"La moyenne des niveaux de gris est : {moyenneNDG}");
+*/
                 // Calculer l'histogramme
 
                 /*  IntPtr resultat = Histogramme.HistogrammeAPartirTableau(capturedImage.Height, capturedImage.Width, BitmapToByteArray(capturedImage), enregistrementCSV: true);
