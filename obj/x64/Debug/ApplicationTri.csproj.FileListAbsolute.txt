@@ -9,3 +9,14 @@ C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\Applica
 C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.csproj.CopyComplete
 C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.exe
 C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\obj\x64\Debug\ApplicationTri.pdb
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\bin\x64\Debug\ApplicationTri.exe.config
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\bin\x64\Debug\ApplicationTri.exe
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\bin\x64\Debug\ApplicationTri.pdb
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\obj\x64\Debug\ApplicationTri.csproj.AssemblyReference.cache
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\obj\x64\Debug\ApplicationTri.Form1.resources
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\obj\x64\Debug\ApplicationTri.Properties.Resources.resources
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\obj\x64\Debug\ApplicationTri.csproj.GenerateResource.cache
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\obj\x64\Debug\ApplicationTri.csproj.CoreCompileInputs.cache
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\obj\x64\Debug\Applicat.26859059.Up2Date
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\obj\x64\Debug\ApplicationTri.exe
+C:\Users\rosel\IPSI\3A\smart industries\application C\ApplicationTri\obj\x64\Debug\ApplicationTri.pdb
