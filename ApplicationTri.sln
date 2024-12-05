@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationTri", "ApplicationTri.csproj", "{93023FD6-4CDD-43EC-B0B4-607C688AE331}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DllProj", "..\DllProj\DllProj.vcxproj", "{7CAA7591-6908-4BA0-8C2E-DEE3004F60BD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DllProj", "projetC++\DllProj.vcxproj", "{7CAA7591-6908-4BA0-8C2E-DEE3004F60BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
