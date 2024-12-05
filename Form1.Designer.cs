@@ -34,14 +34,19 @@
             this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.buttonInit = new System.Windows.Forms.Button();
+            this.pbImageCapture = new System.Windows.Forms.PictureBox();
+            this.labelDécision = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCam)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbImageCapture)).BeginInit();
             this.SuspendLayout();
             // 
             // pbImageCam
             // 
+            this.pbImageCam.Enabled = false;
             this.pbImageCam.Location = new System.Drawing.Point(30, 12);
             this.pbImageCam.Name = "pbImageCam";
-            this.pbImageCam.Size = new System.Drawing.Size(687, 581);
+            this.pbImageCam.Size = new System.Drawing.Size(700, 600);
+            this.pbImageCam.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbImageCam.TabIndex = 0;
             this.pbImageCam.TabStop = false;
             // 
@@ -66,7 +71,6 @@
             // 
             // timer1
             // 
-
             this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.OnTimer);
             // 
@@ -80,19 +84,40 @@
             this.buttonInit.UseVisualStyleBackColor = true;
             this.buttonInit.Click += new System.EventHandler(this.buttonInit_Click);
             // 
+            // pbImageCapture
+            // 
+            this.pbImageCapture.Location = new System.Drawing.Point(30, 644);
+            this.pbImageCapture.Name = "pbImageCapture";
+            this.pbImageCapture.Size = new System.Drawing.Size(700, 353);
+            this.pbImageCapture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbImageCapture.TabIndex = 4;
+            this.pbImageCapture.TabStop = false;
+            // 
+            // labelDécision
+            // 
+            this.labelDécision.AutoSize = true;
+            this.labelDécision.Location = new System.Drawing.Point(870, 337);
+            this.labelDécision.Name = "labelDécision";
+            this.labelDécision.Size = new System.Drawing.Size(95, 25);
+            this.labelDécision.TabIndex = 5;
+            this.labelDécision.Text = "Décision";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2054, 834);
+            this.ClientSize = new System.Drawing.Size(2054, 1009);
+            this.Controls.Add(this.labelDécision);
+            this.Controls.Add(this.pbImageCapture);
             this.Controls.Add(this.buttonInit);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.BoutonACQ);
             this.Controls.Add(this.pbImageCam);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "ApplicationTri";
             this.Load += new System.EventHandler(this.OnLoad);
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCam)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbImageCapture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -105,6 +130,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button buttonInit;
+        private System.Windows.Forms.PictureBox pbImageCapture;
+        private System.Windows.Forms.Label labelDécision;
     }
 }
 

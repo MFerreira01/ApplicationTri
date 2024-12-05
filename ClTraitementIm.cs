@@ -20,7 +20,7 @@ namespace ApplicationTri
 
 
         // Déclaration de la fonction native sans paramètres par défaut
-        [DllImport("DllProj.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("DllProj.dll", EntryPoint = "histogramme", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr histogramme(bool enregistrementCSV);
 
         public IntPtr HistogrammeCS(bool enregistrementCSV = false)
@@ -29,36 +29,37 @@ namespace ApplicationTri
             return Img;
         }
 
-        [DllImport("DllProj.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr creerImageApartirTableau(int hauteur, int largeur, byte[] pixels);
+        [DllImport("DllProj.dll", EntryPoint = "creerHistogramme", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr creerHistogramme(bool enregistrementCSV);
 
-        public static byte[] BitmapToByteArray(Bitmap bitmap)
-        // On transforme l'image Bitmap en tableau pour pouvoir créer une imageNDG et utiliser la fonction Histogramme
+        [DllImport("DllProj.dll", EntryPoint = "libererTableau", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void libererTableau(IntPtr tableau);
+
+
+        [DllImport("DllProj.dll", EntryPoint = "creerHistoApartirTableau", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr creerHistoApartirTableau(int hauteur, int largeur, byte[] pixels, bool enregistrementCSV);
+
+
+        [DllImport("DllProj.dll", EntryPoint = "libererImage", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void LibererImage(IntPtr image);
+
+        // Méthode publique pour appeler l'histogramme à partir d'un tableau
+        public IntPtr HistogrammeAPartirTableau(int hauteur, int largeur, byte[] pixels, bool enregistrementCSV = false)
         {
-            int width = bitmap.Width;
-            int height = bitmap.Height;
-
-            // Verifiez que l'image est en niveau de gris, ou effectuez la conversion si nécessaire
-            BitmapData data = bitmap.LockBits(new Rectangle(0, 0, width, height),
-                                              ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
-
-            int bytes = data.Stride * data.Height;
-            byte[] pixelData = new byte[bytes];
-            Marshal.Copy(data.Scan0, pixelData, 0, bytes);
-            bitmap.UnlockBits(data);
-
-            return pixelData;
-        }
-        public IntPtr ConvertirEnImageNDG(Bitmap capturedImage)
-        {
-            // Convertir l'image en un tableau d'octets
-            byte[] pixelData = BitmapToByteArray(capturedImage);
-
-            // Créer l'image dans la DLL à partir du tableau
-            IntPtr imagePtr = ClTraitementIm.creerImageApartirTableau(capturedImage.Height, capturedImage.Width, pixelData);
+            // Appeler la méthode native
+            IntPtr imagePtr = creerHistoApartirTableau(hauteur, largeur, pixels, true);
 
             return imagePtr;
         }
 
+        // Méthode pour libérer la mémoire native si nécessaire
+/*        public void LibererHisto()
+        {
+            if (histo != IntPtr.Zero)
+            {
+                LibererImage(histo);
+                histo = IntPtr.Zero;
+            }
+        }*/
     }
 }

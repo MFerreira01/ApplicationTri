@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace ApplicationTri
@@ -104,8 +105,8 @@ namespace ApplicationTri
 
             if (bitmap != null)
             {
-                pbImageCam.Height = bitmap.Height;
-                pbImageCam.Width = bitmap.Width;
+                /*pbImageCam.Height = bitmap.Height;
+                pbImageCam.Width = bitmap.Width;*/
                 pbImageCam.Image = bitmap;
             }
 
@@ -168,6 +169,48 @@ namespace ApplicationTri
 
             return bitmap;
         }
+        public static byte[] BitmapToByteArray(Bitmap bitmap)
+        // On transforme l'image Bitmap en tableau pour pouvoir créer une imageNDG et utiliser la fonction Histogramme
+        {
+            int width = bitmap.Width;
+            int height = bitmap.Height;
+
+            // Verifiez que l'image est en niveau de gris, ou effectuez la conversion si nécessaire
+            BitmapData data = bitmap.LockBits(new Rectangle(0, 0, width, height),
+                                              ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+
+            int bytes = data.Stride * data.Height;
+            byte[] pixelData = new byte[bytes];
+            Marshal.Copy(data.Scan0, pixelData, 0, bytes);
+            bitmap.UnlockBits(data);
+
+            return pixelData;
+        }
+
+        static double CalculerMoyenneNDG(Bitmap image)
+        {
+            double sommeNDG = 0;
+            int totalPixels = image.Width * image.Height;
+
+            // Parcourir tous les pixels de l'image
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    // Obtenir la couleur du pixel
+                    Color pixelColor = image.GetPixel(x, y);
+
+                    // Calculer le niveau de gris du pixel (moyenne des composantes RGB)
+                    int niveauGris = (int)((pixelColor.R + pixelColor.G + pixelColor.B) / 3.0);
+
+                    // Ajouter à la somme des niveaux de gris
+                    sommeNDG += niveauGris;
+                }
+            }
+
+            // Calculer la moyenne
+            return sommeNDG / totalPixels;
+        }
 
         private void BoutonACQ_Click(object sender, EventArgs e)
         {
@@ -178,21 +221,29 @@ namespace ApplicationTri
             if (capturedImage != null)
             {
                 pbImageCam.Image = capturedImage;
+                pbImageCapture.Image= capturedImage;
                 MessageBox.Show("Image capturée et stockée en mémoire !");
 
-/*                // Convertir l'image capturée en une image de type CImageNdg
-                CImageNdg ImNDG = ConvertirEnImageNDG(capturedImage);
+                double moyenneNDG = CalculerMoyenneNDG(capturedImage);
 
-                // Appeler la méthode HistogrammeCS sur l'objet CImageNdg
-                ImNDG.HistogrammeCS(true);*/
+                if(moyenneNDG>128)
+                {
+                    labelDécision.Text = "Décision : Objet blnac";
+                }
+                else
+                {
+                    labelDécision.Text = "Décision : Objet noir";
+                }
 
-                /* // Calcul de l'histogramme
-                 var histogramData = Histogramme(capturedImage);
+                MessageBox.Show($"La moyenne des niveaux de gris est : {moyenneNDG}");
 
-                 // Affichage ou utilisation de l'histogramme
-                 AfficherHistogramme(histogramData);*/
+                // Calculer l'histogramme
 
-                Histogramme.HistogrammeCS(true);
+                /*  IntPtr resultat = Histogramme.HistogrammeAPartirTableau(capturedImage.Height, capturedImage.Width, BitmapToByteArray(capturedImage), enregistrementCSV: true);
+
+                   // Faire quelque chose avec `resultat`
+                   Console.WriteLine("Histogramme calculé et instance native créée.");*/
+
             }
             else
             {
