@@ -43,7 +43,7 @@ namespace ApplicationTri
             InitializeComponent();
             Histogramme = new ClTraitementIm();
 
-            m_ipAdrServeur = IPAddress.Parse("192.168.1.200");  // Adresse locale
+            m_ipAdrServeur = IPAddress.Parse("192.168.56.2");  // Adresse locale
             m_ipAdrClient = IPAddress.Parse("192.168.1.150");   // Adresse distante
             m_numPort = 8001;
         }
@@ -153,14 +153,15 @@ namespace ApplicationTri
         private delegate void affImage(PictureBox Pbx, Bitmap bmp);
         private void GetImg(PictureBox Pb, Bitmap btmp)
         {
-	        if (Pb.InvokeRequired)
-	        {
-		        affImage d;
-		        d = new affImage(GetImg);
-		        this.Invoke(d, new object[] { Pb, btmp });
-	        }
-	        else btmp = new Bitmap(Pb.Image);
+            if (Pb.InvokeRequired)
+            {
+                affImage d;
+                d = new affImage(GetImg);
+                this.Invoke(d, new object[] { Pb, btmp });
+            }
+            else btmp = new Bitmap(Pb.Image);
         }
+
         private Bitmap CaptureImage()
         {
             smcs.IImageInfo imageInfo = null;
@@ -247,6 +248,9 @@ namespace ApplicationTri
                 GetImg(pbImageCam, capturedImage);
                 pbImageCapture.Image= capturedImage;
                 MessageBox.Show("Image capturée et stockée en mémoire !");
+
+                // sauvegarder l'image
+                SaveImage(capturedImage, "C:\\Users\\rosel\\OneDrive\\Images\\img\\imgProj");
 
                 double moyenneNDG = CalculerMoyenneNDG(capturedImage);
 
@@ -350,6 +354,22 @@ namespace ApplicationTri
             this.tbCom.AppendText("\r\nAccusé de reception envoyé.\r\n");
             tcpList.Stop();
             sock.Close();
+        }
+
+        private void SaveImage(Bitmap image, string filePath)
+        {
+            try
+            {
+                using (Bitmap copy = new Bitmap(image))
+                {
+                    copy.Save(filePath, System.Drawing.Imaging.ImageFormat.Bmp);
+                }
+                MessageBox.Show($"Image sauvegardée dans : {filePath}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la sauvegarde de l'image : {ex.Message}");
+            }
         }
 
         private void boutQuit_Click(object sender, EventArgs e)
