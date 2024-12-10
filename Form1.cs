@@ -115,8 +115,6 @@ namespace ApplicationTri
 
             if (bitmap != null)
             {
-                /*pbImageCam.Height = bitmap.Height;
-                pbImageCam.Width = bitmap.Width;*/
                 pbImageCam.Image = bitmap;
                 bufferedImage = bitmap;
             }
@@ -280,10 +278,11 @@ namespace ApplicationTri
 
             tcpClient.Close();
         }
-        private void recevoirInfo()
+        private String recevoirInfo()
         {
             TcpListener tcpList;
             Socket sock;
+            String message="";
 
             /* Initializes the Listener */
             tcpList = new TcpListener(m_ipAdrServeur, m_numPort);
@@ -301,13 +300,67 @@ namespace ApplicationTri
             int k = sock.Receive(b);
             this.tbCom.AppendText("Reception...\r\n");
             for (int i = 0; i < k; i++)
+            {
                 this.tbCom.AppendText(Convert.ToChar(b[i]).ToString() + "\r\n");
-
+                message += Convert.ToChar(b[i]).ToString();
+            }
+                
             ASCIIEncoding asen = new ASCIIEncoding();
             sock.Send(asen.GetBytes("Information recue par le serveur.\r\n"));
             this.tbCom.AppendText("\r\nAccusé de reception envoyé.\r\n");
             tcpList.Stop();
             sock.Close();
+
+            return message;
+        }
+        private void ACQ()
+        {
+            try
+            {
+                string message = recevoirInfo();
+                if (message != "1")
+                {
+                    MessageBox.Show("Message reçu != 1, l'acquisition ne sera pas lancé");
+                }
+                else
+                {
+                    // Capture une image
+                    // Essayer de capturer une image
+                    try
+                    {
+                        capturedImage = CaptureImage();
+                    }
+                    // Si le buffer est vide et que l'on ne peut donc pas prendre l'image, on prend la dernière image bufferisé (nouvelle image toutes les 5 secondes)
+                    catch
+                    {
+                        capturedImage = bufferedImage;
+                    }
+
+                    // Affiche l'image capturée dans le PictureBox
+                    if (capturedImage != null)
+                    {
+                        GetImg(pbImageCam, capturedImage);
+                        pbImageCapture.Image = capturedImage;
+                        MessageBox.Show("Image capturée et stockée en mémoire !");
+                        bool obj;
+
+                        double moyenneNDG = CalculerMoyenneNDG(capturedImage);
+
+                        if (moyenneNDG > 128)
+                        {
+                            labelDécision.Text = "Décision : Objet blanc";
+                            obj = true;
+                        }
+                        else
+                        {
+                            labelDécision.Text = "Décision : Objet noir";
+                            obj = false;
+                        }
+                        /*envoieInfo(obj.ToString());*/
+                    }
+                }
+            }
+            catch { }
         }
 
         private void BoutonACQ_Click(object sender, EventArgs e)
@@ -315,13 +368,7 @@ namespace ApplicationTri
             // Capture une image
             
             /* capturedImage = chargerImage();*/
-            try
-            {
-                capturedImage = CaptureImage();
-            }
-            finally
-            { 
-                capturedImage = bufferedImage; }
+            capturedImage = CaptureImage();
 
             // Affiche l'image capturée dans le PictureBox
             if (capturedImage != null)
@@ -351,11 +398,27 @@ namespace ApplicationTri
 
                    // Faire quelque chose avec `resultat`
                    Console.WriteLine("Histogramme calculé et instance native créée.");*/
-
             }
             else
             {
-                MessageBox.Show("Échec de la capture de l'image.");
+                capturedImage = bufferedImage;
+               
+                pbImageCapture.Image = capturedImage;
+                MessageBox.Show("Image capturée et stockée en mémoire !");
+                bool obj;
+
+                double moyenneNDG = CalculerMoyenneNDG(capturedImage);
+
+                if (moyenneNDG > 128)
+                {
+                    labelDécision.Text = "Décision : Objet blanc";
+                    obj = true;
+                }
+                else
+                {
+                    labelDécision.Text = "Décision : Objet noir";
+                    obj = false;
+                }
             }
         }
 
