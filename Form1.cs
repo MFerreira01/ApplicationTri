@@ -149,6 +149,18 @@ namespace ApplicationTri
             smcs.CameraSuite.ExitImageProcAPI();
             smcs.CameraSuite.ExitCameraAPI();
         }
+
+        private delegate void affImage(PictureBox Pbx, Bitmap bmp);
+        private void GetImg(PictureBox Pb, Bitmap btmp)
+        {
+	        if (Pb.InvokeRequired)
+	        {
+		        affImage d;
+		        d = new affImage(GetImg);
+		        this.Invoke(d, new object[] { Pb, btmp });
+	        }
+	        else btmp = new Bitmap(Pb.Image);
+        }
         private Bitmap CaptureImage()
         {
             smcs.IImageInfo imageInfo = null;
@@ -232,7 +244,7 @@ namespace ApplicationTri
             // Affiche l'image capturée dans le PictureBox
             if (capturedImage != null)
             {
-                pbImageCam.Image = capturedImage;
+                GetImg(pbImageCam, capturedImage);
                 pbImageCapture.Image= capturedImage;
                 MessageBox.Show("Image capturée et stockée en mémoire !");
 
