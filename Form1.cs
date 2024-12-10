@@ -43,8 +43,8 @@ namespace ApplicationTri
             InitializeComponent();
             Histogramme = new ClTraitementIm();
 
-            m_ipAdrServeur = IPAddress.Parse("192.168.1.100");  // Adresse locale
-            m_ipAdrClient = IPAddress.Parse("192.168.1.200");   // Adresse distante
+            m_ipAdrServeur = IPAddress.Parse("192.168.1.200");  // Adresse locale
+            m_ipAdrClient = IPAddress.Parse("192.168.1.150");   // Adresse distante
             m_numPort = 8001;
         }
 

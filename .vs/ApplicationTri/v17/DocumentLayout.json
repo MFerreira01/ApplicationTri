@@ -3,19 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{93023FD6-4CDD-43EC-B0B4-607C688AE331}|ApplicationTri.csproj|c:\\users\\rosel\\ipsi\\3a\\smart industries\\application c\\applicationtri\\cltraitementim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93023FD6-4CDD-43EC-B0B4-607C688AE331}|ApplicationTri.csproj|solutionrelative:cltraitementim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|ApplicationTri||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{93023FD6-4CDD-43EC-B0B4-607C688AE331}|ApplicationTri.csproj|C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93023FD6-4CDD-43EC-B0B4-607C688AE331}|ApplicationTri.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93023FD6-4CDD-43EC-B0B4-607C688AE331}|ApplicationTri.csproj|C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{93023FD6-4CDD-43EC-B0B4-607C688AE331}|ApplicationTri.csproj|c:\\users\\rosel\\ipsi\\3a\\smart industries\\application c\\applicationtri\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{93023FD6-4CDD-43EC-B0B4-607C688AE331}|ApplicationTri.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93023FD6-4CDD-43EC-B0B4-607C688AE331}|ApplicationTri.csproj|C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\cltraitementim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93023FD6-4CDD-43EC-B0B4-607C688AE331}|ApplicationTri.csproj|solutionrelative:cltraitementim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{93023FD6-4CDD-43EC-B0B4-607C688AE331}|ApplicationTri.csproj|C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -32,7 +29,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 285,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -45,17 +42,30 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ApplicationTri",
-              "DocumentMoniker": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\ApplicationTri.csproj",
-              "RelativeDocumentMoniker": "ApplicationTri.csproj",
-              "ToolTip": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\ApplicationTri.csproj",
-              "RelativeToolTip": "ApplicationTri.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-12-05T13:40:15.275Z"
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\Form1.cs [Design]",
+              "RelativeToolTip": "Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-05T10:04:25.631Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
+              "Title": "ClTraitementIm.cs",
+              "DocumentMoniker": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\ClTraitementIm.cs",
+              "RelativeDocumentMoniker": "ClTraitementIm.cs",
+              "ToolTip": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\ClTraitementIm.cs",
+              "RelativeToolTip": "ClTraitementIm.cs",
+              "ViewState": "AQIAACUAAAAAAAAAAAAqwCQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-05T10:04:25.525Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "ImageNdg.cpp",
               "DocumentMoniker": "C:\\Users\\maria\\Documents\\Ipsi3\\Outil pour smart industrie\\Application C#\\DllProj\\src\\ImageNdg.cpp",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\maria\\Documents\\Ipsi3\\Outil pour smart industrie\\Application C#\\DllProj\\src\\ImageNdg.cpp",
@@ -68,42 +78,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ClTraitementIm.cs",
-              "DocumentMoniker": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\ClTraitementIm.cs",
-              "RelativeDocumentMoniker": "ClTraitementIm.cs",
-              "ToolTip": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\ClTraitementIm.cs",
-              "RelativeToolTip": "ClTraitementIm.cs",
-              "ViewState": "AQIAAAoAAAAAAAAAAADwvyQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-05T10:04:25.525Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AQIAAOMAAAAAAAAAAAAcwPUAAAAAAAAA",
+              "ViewState": "AQIAAPwAAAAAAAAAAAAcwEwBAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-05T10:04:25.559Z"
+              "WhenOpened": "2024-12-05T10:04:25.559Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Form1.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\Form1.cs",
-              "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\Form1.cs [Design]",
-              "RelativeToolTip": "Form1.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-05T10:04:25.631Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\rosel\\IPSI\\3A\\smart industries\\application C\\ApplicationTri\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
