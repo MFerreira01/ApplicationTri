@@ -14,6 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 using System.Net;
 using System.Net.Sockets;
+using smcs;
 
 
 namespace ApplicationTri
@@ -30,13 +31,13 @@ namespace ApplicationTri
         smcs.IParams m_changeBitDepthParams;
         smcs.IImageBitmap m_changeBitDepthBitmap;
 
-        private Bitmap capturedImage; // Variable pour stocker l'image capturée
-        private ClTraitementIm Histogramme;
-
-        // communication entre PC
         private IPAddress m_ipAdrServeur;
         private IPAddress m_ipAdrClient;
         private int m_numPort;
+
+        private Bitmap capturedImage; // Variable pour stocker l'image capturée
+        private Bitmap bufferedImage;
+        private ClTraitementIm Histogramme;
 
         public Form1()
         {
@@ -67,7 +68,7 @@ namespace ApplicationTri
             m_imageProcApi.CreateBitmap(ref m_changeBitDepthBitmap);
 
 
-            label1.Text = "No camera connected";
+            labelAdressIP.Text = "No camera connected";
 
             // discover all devices on network
             smcsVisionApi.FindAllDevices(3.0);
@@ -77,7 +78,7 @@ namespace ApplicationTri
 
             if (m_device == null || !m_device.Connect()) return;
 
-            label1.Text = "Camera address:" + Common.IpAddrToString(m_device.GetIpAddress());
+            labelAdressIP.Text = "Camera address:" + Common.IpAddrToString(m_device.GetIpAddress());
 
             // disable trigger mode
             bool status = m_device.SetStringNodeValue("TriggerMode", "Off");
@@ -94,7 +95,6 @@ namespace ApplicationTri
             smcs.IImageInfo imageInfo = null;
             if (!m_device.GetImageInfo(ref imageInfo)) return;
 
-
             UInt32 pixelType;
             imageInfo.GetPixelType(out pixelType);
             var depth = smcs.CameraSuite.GvspGetBitsDepth((smcs.GVSP_PIXEL_TYPES)pixelType);
@@ -108,8 +108,6 @@ namespace ApplicationTri
                 image = m_changeBitDepthBitmap;
             }
 
-
-
             Bitmap bitmap = (Bitmap)pbImageCam.Image;
             BitmapData bd = null;
 
@@ -120,6 +118,7 @@ namespace ApplicationTri
                 /*pbImageCam.Height = bitmap.Height;
                 pbImageCam.Width = bitmap.Width;*/
                 pbImageCam.Image = bitmap;
+                bufferedImage = bitmap;
             }
 
             // display image
@@ -194,6 +193,23 @@ namespace ApplicationTri
 
             return bitmap;
         }
+        Bitmap chargerImage()
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "Open Image";
+                dlg.Filter = "bmp files (*.bmp)|*.bmp";
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    // Charge et retourne l'image sélectionnée
+                    return new Bitmap(dlg.FileName);
+                }
+            }
+            // Retourne null si aucune image n'est sélectionnée
+            return null;
+        }
+
         public static byte[] BitmapToByteArray(Bitmap bitmap)
         // On transforme l'image Bitmap en tableau pour pouvoir créer une imageNDG et utiliser la fonction Histogramme
         {
@@ -237,6 +253,7 @@ namespace ApplicationTri
             return sommeNDG / totalPixels;
         }
 
+<<<<<<< HEAD
         private void BoutonACQ_Click(object sender, EventArgs e)
         {
             // Capture une image
@@ -297,6 +314,9 @@ namespace ApplicationTri
         }
 
         private void boutClient_Click(object sender, EventArgs e)
+=======
+        private void envoieInfo(String str)
+>>>>>>> origin/master
         {
             TcpClient tcpClient = new TcpClient();
             this.tbCom.AppendText("Connexion en cours...\r\n");
@@ -305,7 +325,6 @@ namespace ApplicationTri
 
             this.tbCom.AppendText("Connexion etablie\r\n");
 
-            String str = this.tbMessage.Text;
             NetworkStream resStream = tcpClient.GetStream();
 
             ASCIIEncoding asciiEncod = new ASCIIEncoding();
@@ -325,8 +344,7 @@ namespace ApplicationTri
 
             tcpClient.Close();
         }
-
-        private void boutServeur_Click(object sender, EventArgs e)
+        private void recevoirInfo()
         {
             TcpListener tcpList;
             Socket sock;
@@ -356,6 +374,7 @@ namespace ApplicationTri
             sock.Close();
         }
 
+<<<<<<< HEAD
         private void SaveImage(Bitmap image, string filePath)
         {
             try
@@ -373,8 +392,69 @@ namespace ApplicationTri
         }
 
         private void boutQuit_Click(object sender, EventArgs e)
+=======
+        private void BoutonACQ_Click(object sender, EventArgs e)
+>>>>>>> origin/master
         {
-            this.Close();
+            // Capture une image
+            
+            /* capturedImage = chargerImage();*/
+            try
+            {
+                capturedImage = CaptureImage();
+            }
+            finally
+            { 
+                capturedImage = bufferedImage; }
+
+            // Affiche l'image capturée dans le PictureBox
+            if (capturedImage != null)
+            {
+                GetImg(pbImageCam, capturedImage);
+                pbImageCapture.Image = capturedImage;
+                MessageBox.Show("Image capturée et stockée en mémoire !");
+                bool obj;
+
+                double moyenneNDG = CalculerMoyenneNDG(capturedImage);
+
+                if (moyenneNDG > 128)
+                {
+                    labelDécision.Text = "Décision : Objet blanc";
+                    obj = true;
+                }
+                else
+                {
+                    labelDécision.Text = "Décision : Objet noir";
+                    obj = false;
+                }
+                /*envoieInfo(obj.ToString());*/
+
+                // Calculer l'histogramme
+
+                /*  IntPtr resultat = Histogramme.HistogrammeAPartirTableau(capturedImage.Height, capturedImage.Width, BitmapToByteArray(capturedImage), enregistrementCSV: true);
+
+                   // Faire quelque chose avec `resultat`
+                   Console.WriteLine("Histogramme calculé et instance native créée.");*/
+
+            }
+            else
+            {
+                MessageBox.Show("Échec de la capture de l'image.");
+            }
         }
+
+        private void buttonInit_Click(object sender, EventArgs e)
+        {
+            if (m_device != null)
+            {
+                labelAdressIP.Text = "Adresse IP:" + Common.IpAddrToString(m_device.GetIpAddress());
+            }
+            else
+            {
+                labelAdressIP.Text = "pas connecté";
+            }
+
+        }
+
     }
 }
