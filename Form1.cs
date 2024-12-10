@@ -34,6 +34,7 @@ namespace ApplicationTri
         private IPAddress m_ipAdrServeur;
         private IPAddress m_ipAdrClient;
         private int m_numPort;
+        private int m_numImg = 1;
 
         private Bitmap capturedImage; // Variable pour stocker l'image capturée
         private Bitmap bufferedImage;
@@ -253,70 +254,25 @@ namespace ApplicationTri
             return sommeNDG / totalPixels;
         }
 
-<<<<<<< HEAD
-        private void BoutonACQ_Click(object sender, EventArgs e)
-        {
-            // Capture une image
-            capturedImage = CaptureImage();
-
-            // Affiche l'image capturée dans le PictureBox
-            if (capturedImage != null)
-            {
-                GetImg(pbImageCam, capturedImage);
-                pbImageCapture.Image= capturedImage;
-                MessageBox.Show("Image capturée et stockée en mémoire !");
-
-                // sauvegarder l'image
-                SaveImage(capturedImage, "C:\\Users\\rosel\\OneDrive\\Images\\img\\imgProj");
-
-                double moyenneNDG = CalculerMoyenneNDG(capturedImage);
-
-                if(moyenneNDG>128)
-                {
-                    labelDécision.Text = "Décision : Objet blanc";
-                }
-                else
-                {
-                    labelDécision.Text = "Décision : Objet noir";
-                }
-
-/*                MessageBox.Show($"La moyenne des niveaux de gris est : {moyenneNDG}");
-*/
-                // Calculer l'histogramme
-
-                /*  IntPtr resultat = Histogramme.HistogrammeAPartirTableau(capturedImage.Height, capturedImage.Width, BitmapToByteArray(capturedImage), enregistrementCSV: true);
-
-                   // Faire quelque chose avec `resultat`
-                   Console.WriteLine("Histogramme calculé et instance native créée.");*/
-
-            }
-            else
-            {
-                MessageBox.Show("Échec de la capture de l'image.");
-            }
-        }
-
         private void buttonInit_Click(object sender, EventArgs e)
         {
             if (m_device !=null)
             {
-                label1.Text = "Adresse IP:" + Common.IpAddrToString(m_device.GetIpAddress());
+                labelAdressIP.Text = "Adresse IP:" + Common.IpAddrToString(m_device.GetIpAddress());
                 this.lblConnection.BackColor = Color.LimeGreen;
                 this.lblConnection.Text = "Connection établie";
             }
             else
             {
-                label1.Text = "pas connecté";
+                labelAdressIP.Text = "pas connecté";
                 this.lblConnection.BackColor = Color.Orange;
                 this.lblConnection.Text = "Connection en cours";
             }
 
         }
 
-        private void boutClient_Click(object sender, EventArgs e)
-=======
         private void envoieInfo(String str)
->>>>>>> origin/master
+
         {
             TcpClient tcpClient = new TcpClient();
             this.tbCom.AppendText("Connexion en cours...\r\n");
@@ -374,7 +330,7 @@ namespace ApplicationTri
             sock.Close();
         }
 
-<<<<<<< HEAD
+
         private void SaveImage(Bitmap image, string filePath)
         {
             try
@@ -391,10 +347,7 @@ namespace ApplicationTri
             }
         }
 
-        private void boutQuit_Click(object sender, EventArgs e)
-=======
         private void BoutonACQ_Click(object sender, EventArgs e)
->>>>>>> origin/master
         {
             // Capture une image
             
@@ -427,6 +380,11 @@ namespace ApplicationTri
                     labelDécision.Text = "Décision : Objet noir";
                     obj = false;
                 }
+
+                // sauvegarder l'image
+                SaveImage(capturedImage, $"C:\\Users\\rosel\\IPSI\\3A\\vision\\imgProjVision\\imgCapturee_{m_numImg}.bmp");
+                m_numImg++;
+
                 /*envoieInfo(obj.ToString());*/
 
                 // Calculer l'histogramme
@@ -441,19 +399,6 @@ namespace ApplicationTri
             {
                 MessageBox.Show("Échec de la capture de l'image.");
             }
-        }
-
-        private void buttonInit_Click(object sender, EventArgs e)
-        {
-            if (m_device != null)
-            {
-                labelAdressIP.Text = "Adresse IP:" + Common.IpAddrToString(m_device.GetIpAddress());
-            }
-            else
-            {
-                labelAdressIP.Text = "pas connecté";
-            }
-
         }
 
     }
