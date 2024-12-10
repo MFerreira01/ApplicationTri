@@ -12,6 +12,10 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using static System.Net.Mime.MediaTypeNames;
 
+using System.Net;
+using System.Net.Sockets;
+using smcs;
+
 
 namespace ApplicationTri
 {
@@ -27,20 +31,22 @@ namespace ApplicationTri
         smcs.IParams m_changeBitDepthParams;
         smcs.IImageBitmap m_changeBitDepthBitmap;
 
+        private IPAddress m_ipAdrServeur;
+        private IPAddress m_ipAdrClient;
+        private int m_numPort;
+
         private Bitmap capturedImage; // Variable pour stocker l'image capturée
+        private Bitmap bufferedImage;
         private ClTraitementIm Histogramme;
 
         public Form1()
         {
             InitializeComponent();
             Histogramme = new ClTraitementIm();
-<<<<<<< Updated upstream
 
             m_ipAdrServeur = IPAddress.Parse("192.168.1.200");  // Adresse locale
             m_ipAdrClient = IPAddress.Parse("192.168.1.150");   // Adresse distante
             m_numPort = 8001;
-=======
->>>>>>> Stashed changes
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -62,7 +68,7 @@ namespace ApplicationTri
             m_imageProcApi.CreateBitmap(ref m_changeBitDepthBitmap);
 
 
-            label1.Text = "No camera connected";
+            labelAdressIP.Text = "No camera connected";
 
             // discover all devices on network
             smcsVisionApi.FindAllDevices(3.0);
@@ -72,7 +78,7 @@ namespace ApplicationTri
 
             if (m_device == null || !m_device.Connect()) return;
 
-            label1.Text = "Camera address:" + Common.IpAddrToString(m_device.GetIpAddress());
+            labelAdressIP.Text = "Camera address:" + Common.IpAddrToString(m_device.GetIpAddress());
 
             // disable trigger mode
             bool status = m_device.SetStringNodeValue("TriggerMode", "Off");
@@ -89,7 +95,6 @@ namespace ApplicationTri
             smcs.IImageInfo imageInfo = null;
             if (!m_device.GetImageInfo(ref imageInfo)) return;
 
-
             UInt32 pixelType;
             imageInfo.GetPixelType(out pixelType);
             var depth = smcs.CameraSuite.GvspGetBitsDepth((smcs.GVSP_PIXEL_TYPES)pixelType);
@@ -103,8 +108,6 @@ namespace ApplicationTri
                 image = m_changeBitDepthBitmap;
             }
 
-
-
             Bitmap bitmap = (Bitmap)pbImageCam.Image;
             BitmapData bd = null;
 
@@ -115,6 +118,7 @@ namespace ApplicationTri
                 /*pbImageCam.Height = bitmap.Height;
                 pbImageCam.Width = bitmap.Width;*/
                 pbImageCam.Image = bitmap;
+                bufferedImage = bitmap;
             }
 
             // display image
@@ -248,10 +252,76 @@ namespace ApplicationTri
             return sommeNDG / totalPixels;
         }
 
+        private void envoieInfo(String str)
+        {
+            TcpClient tcpClient = new TcpClient();
+            this.tbCom.AppendText("Connexion en cours...\r\n");
+
+            tcpClient.Connect(m_ipAdrClient, m_numPort);
+
+            this.tbCom.AppendText("Connexion etablie\r\n");
+
+            NetworkStream resStream = tcpClient.GetStream();
+
+            ASCIIEncoding asciiEncod = new ASCIIEncoding();
+            byte[] asciiCode = asciiEncod.GetBytes(str);
+            resStream.Write(asciiCode, 0, asciiCode.Length);
+            this.tbCom.AppendText("Transmission : " + str + "\r\n");
+
+            this.tbCom.AppendText("Reception : \r\n");
+            byte[] mesRecu = new byte[1024];
+            int k = resStream.Read(mesRecu, 0, 1024);
+            for (int i = 0; i < k; i++)
+                this.tbCom.AppendText(Convert.ToChar(mesRecu[i]).ToString() + "\r\n");
+            str = "";
+            for (int i = 0; i < k; i++)
+                str = str + Convert.ToChar(mesRecu[i]);
+            this.tbCom.AppendText("Message recu : " + str + "\r\n");
+
+            tcpClient.Close();
+        }
+        private void recevoirInfo()
+        {
+            TcpListener tcpList;
+            Socket sock;
+
+            /* Initializes the Listener */
+            tcpList = new TcpListener(m_ipAdrServeur, m_numPort);
+
+            /* Start Listeneting at the specified port */
+            tcpList.Start();
+            this.tbCom.AppendText("Le serveur en cours d'execution...\r\n");
+            this.tbCom.AppendText("Le point de terminaison local  :" + tcpList.LocalEndpoint.ToString() + "\r\n");
+            this.tbCom.AppendText("Attente de connexion.....\r\n");
+
+            sock = tcpList.AcceptSocket();
+            this.tbCom.AppendText("Connexion acceptee de " + sock.RemoteEndPoint + "\r\n");
+
+            byte[] b = new byte[1024];
+            int k = sock.Receive(b);
+            this.tbCom.AppendText("Reception...\r\n");
+            for (int i = 0; i < k; i++)
+                this.tbCom.AppendText(Convert.ToChar(b[i]).ToString() + "\r\n");
+
+            ASCIIEncoding asen = new ASCIIEncoding();
+            sock.Send(asen.GetBytes("Information recue par le serveur.\r\n"));
+            this.tbCom.AppendText("\r\nAccusé de reception envoyé.\r\n");
+            tcpList.Stop();
+            sock.Close();
+        }
+
         private void BoutonACQ_Click(object sender, EventArgs e)
         {
             // Capture une image
-            capturedImage = CaptureImage();
+            
+            /* capturedImage = chargerImage();*/
+            try
+            {
+                capturedImage = CaptureImage();
+            }
+            finally
+            { 
+                capturedImage = bufferedImage; }
 
             // Affiche l'image capturée dans le PictureBox
             if (capturedImage != null)
@@ -259,20 +329,22 @@ namespace ApplicationTri
                 GetImg(pbImageCam, capturedImage);
                 pbImageCapture.Image = capturedImage;
                 MessageBox.Show("Image capturée et stockée en mémoire !");
+                bool obj;
 
                 double moyenneNDG = CalculerMoyenneNDG(capturedImage);
 
                 if (moyenneNDG > 128)
                 {
                     labelDécision.Text = "Décision : Objet blanc";
+                    obj = true;
                 }
                 else
                 {
                     labelDécision.Text = "Décision : Objet noir";
+                    obj = false;
                 }
+                /*envoieInfo(obj.ToString());*/
 
-                /*                MessageBox.Show($"La moyenne des niveaux de gris est : {moyenneNDG}");
-                */
                 // Calculer l'histogramme
 
                 /*  IntPtr resultat = Histogramme.HistogrammeAPartirTableau(capturedImage.Height, capturedImage.Width, BitmapToByteArray(capturedImage), enregistrementCSV: true);
@@ -291,11 +363,11 @@ namespace ApplicationTri
         {
             if (m_device != null)
             {
-                label1.Text = "Adresse IP:" + Common.IpAddrToString(m_device.GetIpAddress());
+                labelAdressIP.Text = "Adresse IP:" + Common.IpAddrToString(m_device.GetIpAddress());
             }
             else
             {
-                label1.Text = "pas connecté";
+                labelAdressIP.Text = "pas connecté";
             }
 
         }

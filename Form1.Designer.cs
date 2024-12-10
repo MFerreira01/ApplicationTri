@@ -31,23 +31,26 @@
             this.components = new System.ComponentModel.Container();
             this.pbImageCam = new System.Windows.Forms.PictureBox();
             this.BoutonACQ = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelAdressIP = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pbImageCapture = new System.Windows.Forms.PictureBox();
             this.labelDécision = new System.Windows.Forms.Label();
             this.tbCom = new System.Windows.Forms.TextBox();
-            this.tbMessage = new System.Windows.Forms.TextBox();
-            this.boutQuit = new System.Windows.Forms.Button();
             this.lblConnection = new System.Windows.Forms.Label();
             this.ouvrirImage = new System.Windows.Forms.OpenFileDialog();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.interfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.acquisitionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.controleRobotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCam)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCapture)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pbImageCam
             // 
             this.pbImageCam.Enabled = false;
-            this.pbImageCam.Location = new System.Drawing.Point(29, 12);
+            this.pbImageCam.Location = new System.Drawing.Point(12, 67);
             this.pbImageCam.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pbImageCam.Name = "pbImageCam";
             this.pbImageCam.Size = new System.Drawing.Size(700, 600);
@@ -57,7 +60,7 @@
             // 
             // BoutonACQ
             // 
-            this.BoutonACQ.Location = new System.Drawing.Point(875, 194);
+            this.BoutonACQ.Location = new System.Drawing.Point(874, 506);
             this.BoutonACQ.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BoutonACQ.Name = "BoutonACQ";
             this.BoutonACQ.Size = new System.Drawing.Size(133, 66);
@@ -66,14 +69,14 @@
             this.BoutonACQ.UseVisualStyleBackColor = true;
             this.BoutonACQ.Click += new System.EventHandler(this.BoutonACQ_Click);
             // 
-            // label1
+            // labelAdressIP
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(769, 58);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 25);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "label1";
+            this.labelAdressIP.AutoSize = true;
+            this.labelAdressIP.Location = new System.Drawing.Point(825, 176);
+            this.labelAdressIP.Name = "labelAdressIP";
+            this.labelAdressIP.Size = new System.Drawing.Size(70, 25);
+            this.labelAdressIP.TabIndex = 2;
+            this.labelAdressIP.Text = "label1";
             // 
             // timer1
             // 
@@ -82,10 +85,10 @@
             // 
             // pbImageCapture
             // 
-            this.pbImageCapture.Location = new System.Drawing.Point(29, 644);
+            this.pbImageCapture.Location = new System.Drawing.Point(12, 697);
             this.pbImageCapture.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pbImageCapture.Name = "pbImageCapture";
-            this.pbImageCapture.Size = new System.Drawing.Size(700, 352);
+            this.pbImageCapture.Size = new System.Drawing.Size(700, 600);
             this.pbImageCapture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbImageCapture.TabIndex = 4;
             this.pbImageCapture.TabStop = false;
@@ -93,7 +96,7 @@
             // labelDécision
             // 
             this.labelDécision.AutoSize = true;
-            this.labelDécision.Location = new System.Drawing.Point(869, 335);
+            this.labelDécision.Location = new System.Drawing.Point(886, 616);
             this.labelDécision.Name = "labelDécision";
             this.labelDécision.Size = new System.Drawing.Size(95, 25);
             this.labelDécision.TabIndex = 5;
@@ -109,20 +112,11 @@
             this.tbCom.Size = new System.Drawing.Size(520, 515);
             this.tbCom.TabIndex = 8;
             // 
-            // tbMessage
-            // 
-            this.tbMessage.Location = new System.Drawing.Point(1387, 550);
-            this.tbMessage.Margin = new System.Windows.Forms.Padding(4);
-            this.tbMessage.Name = "tbMessage";
-            this.tbMessage.Size = new System.Drawing.Size(520, 31);
-            this.tbMessage.TabIndex = 9;
-            this.tbMessage.Text = "Ceci est un message test";
-            // 
             // lblConnection
             // 
             this.lblConnection.AutoSize = true;
             this.lblConnection.BackColor = System.Drawing.Color.White;
-            this.lblConnection.Location = new System.Drawing.Point(769, 12);
+            this.lblConnection.Location = new System.Drawing.Point(825, 114);
             this.lblConnection.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblConnection.Name = "lblConnection";
             this.lblConnection.Size = new System.Drawing.Size(228, 25);
@@ -133,26 +127,61 @@
             // 
             this.ouvrirImage.FileName = "openFileDialog1";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.interfaceToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1924, 42);
+            this.menuStrip1.TabIndex = 12;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // interfaceToolStripMenuItem
+            // 
+            this.interfaceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.acquisitionToolStripMenuItem,
+            this.controleRobotToolStripMenuItem});
+            this.interfaceToolStripMenuItem.Name = "interfaceToolStripMenuItem";
+            this.interfaceToolStripMenuItem.Size = new System.Drawing.Size(127, 38);
+            this.interfaceToolStripMenuItem.Text = "Interface";
+            // 
+            // acquisitionToolStripMenuItem
+            // 
+            this.acquisitionToolStripMenuItem.Name = "acquisitionToolStripMenuItem";
+            this.acquisitionToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            this.acquisitionToolStripMenuItem.Text = "Acquisition";
+            // 
+            // controleRobotToolStripMenuItem
+            // 
+            this.controleRobotToolStripMenuItem.Name = "controleRobotToolStripMenuItem";
+            this.controleRobotToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            this.controleRobotToolStripMenuItem.Text = "Controle robot";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1924, 1009);
+            this.ClientSize = new System.Drawing.Size(1924, 1164);
             this.Controls.Add(this.lblConnection);
-            this.Controls.Add(this.boutQuit);
-            this.Controls.Add(this.tbMessage);
             this.Controls.Add(this.tbCom);
             this.Controls.Add(this.labelDécision);
             this.Controls.Add(this.pbImageCapture);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelAdressIP);
             this.Controls.Add(this.BoutonACQ);
             this.Controls.Add(this.pbImageCam);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "ApplicationTri";
             this.Load += new System.EventHandler(this.OnLoad);
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCam)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCapture)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,15 +191,17 @@
 
         private System.Windows.Forms.PictureBox pbImageCam;
         private System.Windows.Forms.Button BoutonACQ;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelAdressIP;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.PictureBox pbImageCapture;
         private System.Windows.Forms.Label labelDécision;
         private System.Windows.Forms.TextBox tbCom;
-        private System.Windows.Forms.TextBox tbMessage;
-        private System.Windows.Forms.Button boutQuit;
         private System.Windows.Forms.Label lblConnection;
         private System.Windows.Forms.OpenFileDialog ouvrirImage;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem interfaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem acquisitionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem controleRobotToolStripMenuItem;
     }
 }
 
