@@ -34,6 +34,7 @@ namespace ApplicationTri
         private IPAddress m_ipAdrServeur;
         private IPAddress m_ipAdrClient;
         private int m_numPort;
+        private int m_numImg = 1;
 
         private Bitmap capturedImage; // Variable pour stocker l'image capturée
         private Bitmap bufferedImage;
@@ -44,7 +45,7 @@ namespace ApplicationTri
             InitializeComponent();
             Histogramme = new ClTraitementIm();
 
-            m_ipAdrServeur = IPAddress.Parse("192.168.1.200");  // Adresse locale
+            m_ipAdrServeur = IPAddress.Parse("192.168.56.2");  // Adresse locale
             m_ipAdrClient = IPAddress.Parse("192.168.1.150");   // Adresse distante
             m_numPort = 8001;
         }
@@ -158,6 +159,7 @@ namespace ApplicationTri
             }
             else btmp = new Bitmap(Pb.Image);
         }
+
         private Bitmap CaptureImage()
         {
             smcs.IImageInfo imageInfo = null;
@@ -250,7 +252,25 @@ namespace ApplicationTri
             return sommeNDG / totalPixels;
         }
 
+        private void buttonInit_Click(object sender, EventArgs e)
+        {
+            if (m_device !=null)
+            {
+                labelAdressIP.Text = "Adresse IP:" + Common.IpAddrToString(m_device.GetIpAddress());
+                this.lblConnection.BackColor = Color.LimeGreen;
+                this.lblConnection.Text = "Connection établie";
+            }
+            else
+            {
+                labelAdressIP.Text = "pas connecté";
+                this.lblConnection.BackColor = Color.Orange;
+                this.lblConnection.Text = "Connection en cours";
+            }
+
+        }
+
         private void envoieInfo(String str)
+
         {
             TcpClient tcpClient = new TcpClient();
             this.tbCom.AppendText("Connexion en cours...\r\n");
@@ -363,6 +383,23 @@ namespace ApplicationTri
             catch { }
         }
 
+
+        private void SaveImage(Bitmap image, string filePath)
+        {
+            try
+            {
+                using (Bitmap copy = new Bitmap(image))
+                {
+                    copy.Save(filePath, System.Drawing.Imaging.ImageFormat.Bmp);
+                }
+                MessageBox.Show($"Image sauvegardée dans : {filePath}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la sauvegarde de l'image : {ex.Message}");
+            }
+        }
+
         private void BoutonACQ_Click(object sender, EventArgs e)
         {
             // Capture une image
@@ -390,6 +427,11 @@ namespace ApplicationTri
                     labelDécision.Text = "Décision : Objet noir";
                     obj = false;
                 }
+
+                // sauvegarder l'image
+                SaveImage(capturedImage, $"C:\\Users\\rosel\\IPSI\\3A\\vision\\imgProjVision\\imgCapturee_{m_numImg}.bmp");
+                m_numImg++;
+
                 /*envoieInfo(obj.ToString());*/
 
                 // Calculer l'histogramme
@@ -420,19 +462,6 @@ namespace ApplicationTri
                     obj = false;
                 }
             }
-        }
-
-        private void buttonInit_Click(object sender, EventArgs e)
-        {
-            if (m_device != null)
-            {
-                labelAdressIP.Text = "Adresse IP:" + Common.IpAddrToString(m_device.GetIpAddress());
-            }
-            else
-            {
-                labelAdressIP.Text = "pas connecté";
-            }
-
         }
 
     }
