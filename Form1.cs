@@ -12,9 +12,6 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using static System.Net.Mime.MediaTypeNames;
 
-using System.Net;
-using System.Net.Sockets;
-
 
 namespace ApplicationTri
 {
@@ -33,19 +30,17 @@ namespace ApplicationTri
         private Bitmap capturedImage; // Variable pour stocker l'image capturée
         private ClTraitementIm Histogramme;
 
-        // communication entre PC
-        private IPAddress m_ipAdrServeur;
-        private IPAddress m_ipAdrClient;
-        private int m_numPort;
-
         public Form1()
         {
             InitializeComponent();
             Histogramme = new ClTraitementIm();
+<<<<<<< Updated upstream
 
             m_ipAdrServeur = IPAddress.Parse("192.168.1.200");  // Adresse locale
             m_ipAdrClient = IPAddress.Parse("192.168.1.150");   // Adresse distante
             m_numPort = 8001;
+=======
+>>>>>>> Stashed changes
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -153,13 +148,13 @@ namespace ApplicationTri
         private delegate void affImage(PictureBox Pbx, Bitmap bmp);
         private void GetImg(PictureBox Pb, Bitmap btmp)
         {
-	        if (Pb.InvokeRequired)
-	        {
-		        affImage d;
-		        d = new affImage(GetImg);
-		        this.Invoke(d, new object[] { Pb, btmp });
-	        }
-	        else btmp = new Bitmap(Pb.Image);
+            if (Pb.InvokeRequired)
+            {
+                affImage d;
+                d = new affImage(GetImg);
+                this.Invoke(d, new object[] { Pb, btmp });
+            }
+            else btmp = new Bitmap(Pb.Image);
         }
         private Bitmap CaptureImage()
         {
@@ -193,6 +188,23 @@ namespace ApplicationTri
 
             return bitmap;
         }
+        Bitmap chargerImage()
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "Open Image";
+                dlg.Filter = "bmp files (*.bmp)|*.bmp";
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    // Charge et retourne l'image sélectionnée
+                    return new Bitmap(dlg.FileName);
+                }
+            }
+            // Retourne null si aucune image n'est sélectionnée
+            return null;
+        }
+
         public static byte[] BitmapToByteArray(Bitmap bitmap)
         // On transforme l'image Bitmap en tableau pour pouvoir créer une imageNDG et utiliser la fonction Histogramme
         {
@@ -245,12 +257,12 @@ namespace ApplicationTri
             if (capturedImage != null)
             {
                 GetImg(pbImageCam, capturedImage);
-                pbImageCapture.Image= capturedImage;
+                pbImageCapture.Image = capturedImage;
                 MessageBox.Show("Image capturée et stockée en mémoire !");
 
                 double moyenneNDG = CalculerMoyenneNDG(capturedImage);
 
-                if(moyenneNDG>128)
+                if (moyenneNDG > 128)
                 {
                     labelDécision.Text = "Décision : Objet blanc";
                 }
@@ -259,8 +271,8 @@ namespace ApplicationTri
                     labelDécision.Text = "Décision : Objet noir";
                 }
 
-/*                MessageBox.Show($"La moyenne des niveaux de gris est : {moyenneNDG}");
-*/
+                /*                MessageBox.Show($"La moyenne des niveaux de gris est : {moyenneNDG}");
+                */
                 // Calculer l'histogramme
 
                 /*  IntPtr resultat = Histogramme.HistogrammeAPartirTableau(capturedImage.Height, capturedImage.Width, BitmapToByteArray(capturedImage), enregistrementCSV: true);
@@ -277,84 +289,16 @@ namespace ApplicationTri
 
         private void buttonInit_Click(object sender, EventArgs e)
         {
-            if (m_device !=null)
+            if (m_device != null)
             {
                 label1.Text = "Adresse IP:" + Common.IpAddrToString(m_device.GetIpAddress());
-                this.lblConnection.BackColor = Color.LimeGreen;
-                this.lblConnection.Text = "Connection établie";
             }
             else
             {
                 label1.Text = "pas connecté";
-                this.lblConnection.BackColor = Color.Orange;
-                this.lblConnection.Text = "Connection en cours";
             }
 
         }
 
-        private void boutClient_Click(object sender, EventArgs e)
-        {
-            TcpClient tcpClient = new TcpClient();
-            this.tbCom.AppendText("Connexion en cours...\r\n");
-
-            tcpClient.Connect(m_ipAdrClient, m_numPort);
-
-            this.tbCom.AppendText("Connexion etablie\r\n");
-
-            String str = this.tbMessage.Text;
-            NetworkStream resStream = tcpClient.GetStream();
-
-            ASCIIEncoding asciiEncod = new ASCIIEncoding();
-            byte[] asciiCode = asciiEncod.GetBytes(str);
-            resStream.Write(asciiCode, 0, asciiCode.Length);
-            this.tbCom.AppendText("Transmission : " + str + "\r\n");
-
-            this.tbCom.AppendText("Reception : \r\n");
-            byte[] mesRecu = new byte[1024];
-            int k = resStream.Read(mesRecu, 0, 1024);
-            for (int i = 0; i < k; i++)
-                this.tbCom.AppendText(Convert.ToChar(mesRecu[i]).ToString() + "\r\n");
-            str = "";
-            for (int i = 0; i < k; i++)
-                str = str + Convert.ToChar(mesRecu[i]);
-            this.tbCom.AppendText("Message recu : " + str + "\r\n");
-
-            tcpClient.Close();
-        }
-
-        private void boutServeur_Click(object sender, EventArgs e)
-        {
-            TcpListener tcpList;
-            Socket sock;
-
-            /* Initializes the Listener */
-            tcpList = new TcpListener(m_ipAdrServeur, m_numPort);
-
-            /* Start Listeneting at the specified port */
-            tcpList.Start();
-            this.tbCom.AppendText("Le serveur en cours d'execution...\r\n");
-            this.tbCom.AppendText("Le point de terminaison local  :" + tcpList.LocalEndpoint.ToString() + "\r\n");
-            this.tbCom.AppendText("Attente de connexion.....\r\n");
-
-            sock = tcpList.AcceptSocket();
-            this.tbCom.AppendText("Connexion acceptee de " + sock.RemoteEndPoint + "\r\n");
-
-            byte[] b = new byte[1024];
-            int k = sock.Receive(b);
-            this.tbCom.AppendText("Reception...\r\n");
-            for (int i = 0; i < k; i++)
-                this.tbCom.AppendText(Convert.ToChar(b[i]).ToString() + "\r\n");
-
-            ASCIIEncoding asen = new ASCIIEncoding();
-            sock.Send(asen.GetBytes("Information recue par le serveur.\r\n"));
-            this.tbCom.AppendText("\r\nAccusé de reception envoyé.\r\n");
-            tcpList.Stop();
-            sock.Close();
-        }
-
-        private void boutQuit_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
     }
 }
