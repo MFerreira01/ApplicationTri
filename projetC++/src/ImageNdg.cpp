@@ -316,6 +316,37 @@ std::vector<unsigned long> CImageNdg::histogramme(bool enregistrementCSV) {
 	return h;
 }
 
+extern "C" __declspec(dllexport) void GetHistogram(CImageNdg* image, bool enregistrementCSV, unsigned long* histogramme, int* taille)
+{
+			if (!image || !histogramme || !taille)
+				throw std::invalid_argument("Paramètre invalide !");
+
+			// Initialisation de l'histogramme
+			*taille = 256;
+			for (int i = 0; i < *taille; ++i) {
+				histogramme[i] = 0;
+			}
+
+			// Calcul de l'histogramme
+			for (int i = 0; i < image->lireNbPixels(); ++i) {
+				histogramme[image->operator()(i)] += 1;
+			}
+
+			// Optionnel : Enregistrement en CSV
+			if (enregistrementCSV) {
+				std::string fichier = "res/" + image->lireNom() + ".csv";
+				std::ofstream f(fichier.c_str());
+				if (!f.is_open()) {
+					throw std::runtime_error("Impossible d'ouvrir le fichier en écriture !");
+				}
+				else {
+					for (int i = 0; i < *taille; ++i) {
+						f << histogramme[i] << std::endl;
+					}
+				}
+			}
+}
+
 // signatures globales
 MOMENTS CImageNdg::signatures(const std::vector<unsigned long> h) {
 

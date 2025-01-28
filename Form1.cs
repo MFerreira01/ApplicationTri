@@ -16,6 +16,8 @@ using System.Net;
 using System.Net.Sockets;
 using smcs;
 
+using System.IO;
+
 
 namespace ApplicationTri
 {
@@ -38,12 +40,14 @@ namespace ApplicationTri
 
         private Bitmap capturedImage; // Variable pour stocker l'image capturée
         private Bitmap bufferedImage;
-        private ClTraitementIm Histogramme;
+        /*        private ClTraitementIm Histogramme;*/
+
+        string imagePath;
 
         public Form1()
         {
             InitializeComponent();
-            Histogramme = new ClTraitementIm();
+            /*Histogramme = new ClTraitementIm();*/
 
             m_ipAdrServeur = IPAddress.Parse("192.168.56.2");  // Adresse locale
             m_ipAdrClient = IPAddress.Parse("192.168.1.150");   // Adresse distante
@@ -192,23 +196,7 @@ namespace ApplicationTri
 
             return bitmap;
         }
-        Bitmap chargerImage()
-        {
-            using (OpenFileDialog dlg = new OpenFileDialog())
-            {
-                dlg.Title = "Open Image";
-                dlg.Filter = "bmp files (*.bmp)|*.bmp";
-
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    // Charge et retourne l'image sélectionnée
-                    return new Bitmap(dlg.FileName);
-                }
-            }
-            // Retourne null si aucune image n'est sélectionnée
-            return null;
-        }
-
+       
         public static byte[] BitmapToByteArray(Bitmap bitmap)
         // On transforme l'image Bitmap en tableau pour pouvoir créer une imageNDG et utiliser la fonction Histogramme
         {
@@ -251,10 +239,56 @@ namespace ApplicationTri
             // Calculer la moyenne
             return sommeNDG / totalPixels;
         }
+        static double CalculerMin(Bitmap image)
+        {
+            double min = 255;
+
+            // Parcourir tous les pixels de l'image
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    // Obtenir la couleur du pixel
+                    Color pixelColor = image.GetPixel(x, y);
+
+                    // Calculer le niveau de gris du pixel (moyenne des composantes RGB)
+                    int niveauGris = (int)((pixelColor.R + pixelColor.G + pixelColor.B) / 3.0);
+
+                    // Ajouter à la somme des niveaux de gris
+                    if(niveauGris<min) min = niveauGris;
+                }
+            }
+
+            return min;
+        }
+        static double CalculerMax(Bitmap image)
+        {
+            double max = 0;
+
+            // Parcourir tous les pixels de l'image
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    // Obtenir la couleur du pixel
+                    Color pixelColor = image.GetPixel(x, y);
+
+                    // Calculer le niveau de gris du pixel (moyenne des composantes RGB)
+                    int niveauGris = (int)((pixelColor.R + pixelColor.G + pixelColor.B) / 3.0);
+
+                    // Ajouter à la somme des niveaux de gris
+                    if (niveauGris > max) max = niveauGris;
+                }
+            }
+
+            return max;
+        }
 
         private void buttonInit_Click(object sender, EventArgs e)
         {
-            if (m_device !=null)
+
+            return;
+/*            if (m_device !=null)
             {
                 labelAdressIP.Text = "Adresse IP:" + Common.IpAddrToString(m_device.GetIpAddress());
                 this.lblConnection.BackColor = Color.LimeGreen;
@@ -266,6 +300,16 @@ namespace ApplicationTri
                 this.lblConnection.BackColor = Color.Orange;
                 this.lblConnection.Text = "Connection en cours";
             }
+
+            bool enregistrementCSV = true;
+
+            ulong[] histogramme = DLL.CalculerHistogrammeManaged(image, enregistrementCSV);
+
+            // Affichage des résultats
+            for (int i = 0; i < histogramme.Length; i++)
+            {
+                Console.WriteLine($"Valeur {i} : {histogramme[i]}");
+            }*/
 
         }
 
@@ -376,13 +420,15 @@ namespace ApplicationTri
                             labelDécision.Text = "Décision : Objet noir";
                             obj = false;
                         }
-                        /*envoieInfo(obj.ToString());*/
+                        envoieInfo(obj.ToString());
                     }
                 }
             }
-            catch { }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
         }
-
 
         private void SaveImage(Bitmap image, string filePath)
         {
@@ -429,7 +475,7 @@ namespace ApplicationTri
                 }
 
                 // sauvegarder l'image
-                SaveImage(capturedImage, $"C:\\Users\\rosel\\IPSI\\3A\\vision\\imgProjVision\\imgCapturee_{m_numImg}.bmp");
+                SaveImage(capturedImage, $"C:\\Users\\maria\\Downloads\\imgProjVision\\imgCapturee_{m_numImg}.bmp");
                 m_numImg++;
 
                 /*envoieInfo(obj.ToString());*/
@@ -462,6 +508,81 @@ namespace ApplicationTri
                     obj = false;
                 }
             }
+        }
+
+        System.Drawing.Image img;
+        private void buttonOuvrir_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "Open Image";
+                dlg.Filter = "bmp files (*.bmp)|*.bmp";
+
+                if (ouvrirImage.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    imagePath = ouvrirImage.FileName;
+                }
+                img = System.Drawing.Image.FromFile(ouvrirImage.FileName);
+                pbImageCam.Image = new Bitmap(img);
+
+                MessageBox.Show(imagePath);
+            }
+        }
+
+        private void buttonTraiter_Click(object sender, EventArgs e)
+        {
+            Bitmap img = ClTraitementIm.StretchImageDynamic(imagePath);
+            pbImageCapture.Image = img;
+            pbImageCapture.Image = ClTraitementIm.ProcessImage(img, 40);
+            img = ClTraitementIm.ProcessImage(img, 40);
+            img = ClTraitementIm.inverser(img);
+
+            // Détection des pixels blancs
+            List<PointF> points = ClTraitementIm.GetPointsFromBitmap(img, Color.White);
+
+            if (points.Count == 0)
+            {
+                Console.WriteLine("Aucun point blanc détecté.");
+                return;
+            }
+
+            // Étape 1: Calcul de la moyenne
+            double[] mean = ClTraitementIm.CalculateMean(points);
+
+            // Étape 2: Centrage des données
+            double[,] centeredData = ClTraitementIm.CenterData(points, mean);
+
+            // Étape 3: Calcul de la matrice de covariance
+            double[,] covarianceMatrix = ClTraitementIm.ComputeCovarianceMatrix(centeredData);
+
+            // Étape 4: Décomposition propre
+            (double[] eigenValues, double[,] eigenVectors) = ClTraitementIm.EigenDecomposition(covarianceMatrix);
+
+            /// Étape 5: Dessin des axes principaux
+            string outputPath = "";
+            pbImageCapture.Image = ClTraitementIm.DrawAxesOnImage(img, mean, eigenVectors, outputPath, saveToFile: false);
+
+            // Récupérer l'axe principal (le premier vecteur propre)
+            double vx = eigenVectors[0, 0]; // Composante x du vecteur propre principal
+            double vy = eigenVectors[1, 0]; // Composante y du vecteur propre principal
+
+            // Calculer l'angle entre la verticale et l'axe principal
+            double[] axePrincipal = { vx, vy };
+            double angle = ClTraitementIm.CalculerAngleVerticale(axePrincipal);
+
+            MessageBox.Show($"L'angle entre la verticale et l'axe principal est : {angle} degrés \n centre de gravité : " + ClTraitementIm.GetCenterOfGravity(img));
+
+            // Dessiner l'arc sur l'image
+            string sortie = "C:\\Users\\maria\\Downloads\\imgProjVision\\image_modifiee_avec_arc.jpg";
+            int radius = 150;  
+            ClTraitementIm.DrawAngleArcOnImage(img, axePrincipal, angle, radius, sortie);
+
+
+            /*double moyenneNDG = CalculerMoyenneNDG((Bitmap)img);
+            double min = CalculerMin((Bitmap)img);
+            double max = CalculerMax((Bitmap)img);
+            MessageBox.Show("moyenne " + moyenneNDG + "\n min " + min + "\n max " + max);*/
         }
 
     }

@@ -1,0 +1,22 @@
+﻿  ImageClasse.cpp
+  ImageCouleur.cpp
+  ImageDouble.cpp
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageDouble.cpp(526,31): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageDouble.cpp(527,32): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageDouble.cpp(534,32): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageDouble.cpp(534,77): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageDouble.cpp(543,32): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageDouble.cpp(543,77): warning C4018: '<' : incompatibilité signed/unsigned
+  ImageNdg.cpp
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageNdg.cpp(322,5): warning C4297: 'GetHistogram' : la fonction lève une exception alors qu'elle est présumée ne pas le faire
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageNdg.cpp(322,5): message : Fonction extern "C" et /EHc spécifié
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageNdg.cpp(340,6): warning C4297: 'GetHistogram' : la fonction lève une exception alors qu'elle est présumée ne pas le faire
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageNdg.cpp(340,6): message : Fonction extern "C" et /EHc spécifié
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageNdg.cpp(362,12): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageNdg.cpp(509,35): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageNdg.cpp(796,57): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageNdg.cpp(796,34): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\projetC++\src\ImageNdg.cpp(860,21): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+  Génération de code en cours...
+     Création de la bibliothèque C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\x64\Debug\DllProj.lib et de l'objet C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\x64\Debug\DllProj.exp
+  DllProj.vcxproj -> C:\Users\maria\Documents\Ipsi3\Outil pour smart industrie\Application C#\ApplicationTri\x64\Debug\DllProj.dll

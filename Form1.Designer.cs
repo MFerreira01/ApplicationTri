@@ -42,6 +42,8 @@
             this.interfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.acquisitionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.controleRobotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonOuvrir = new System.Windows.Forms.Button();
+            this.buttonTraiter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCam)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCapture)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -125,7 +127,7 @@
             // 
             // ouvrirImage
             // 
-            this.ouvrirImage.FileName = "openFileDialog1";
+            this.ouvrirImage.FileName = "openFileDalog1";
             // 
             // menuStrip1
             // 
@@ -135,7 +137,7 @@
             this.interfaceToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1924, 42);
+            this.menuStrip1.Size = new System.Drawing.Size(1924, 48);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -145,26 +147,48 @@
             this.acquisitionToolStripMenuItem,
             this.controleRobotToolStripMenuItem});
             this.interfaceToolStripMenuItem.Name = "interfaceToolStripMenuItem";
-            this.interfaceToolStripMenuItem.Size = new System.Drawing.Size(127, 38);
+            this.interfaceToolStripMenuItem.Size = new System.Drawing.Size(127, 36);
             this.interfaceToolStripMenuItem.Text = "Interface";
             // 
             // acquisitionToolStripMenuItem
             // 
             this.acquisitionToolStripMenuItem.Name = "acquisitionToolStripMenuItem";
-            this.acquisitionToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            this.acquisitionToolStripMenuItem.Size = new System.Drawing.Size(304, 44);
             this.acquisitionToolStripMenuItem.Text = "Acquisition";
             // 
             // controleRobotToolStripMenuItem
             // 
             this.controleRobotToolStripMenuItem.Name = "controleRobotToolStripMenuItem";
-            this.controleRobotToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            this.controleRobotToolStripMenuItem.Size = new System.Drawing.Size(304, 44);
             this.controleRobotToolStripMenuItem.Text = "Controle robot";
+            // 
+            // buttonOuvrir
+            // 
+            this.buttonOuvrir.Location = new System.Drawing.Point(848, 264);
+            this.buttonOuvrir.Name = "buttonOuvrir";
+            this.buttonOuvrir.Size = new System.Drawing.Size(101, 70);
+            this.buttonOuvrir.TabIndex = 13;
+            this.buttonOuvrir.Text = "ouvrir";
+            this.buttonOuvrir.UseVisualStyleBackColor = true;
+            this.buttonOuvrir.Click += new System.EventHandler(this.buttonOuvrir_Click);
+            // 
+            // buttonTraiter
+            // 
+            this.buttonTraiter.Location = new System.Drawing.Point(848, 351);
+            this.buttonTraiter.Name = "buttonTraiter";
+            this.buttonTraiter.Size = new System.Drawing.Size(101, 70);
+            this.buttonTraiter.TabIndex = 14;
+            this.buttonTraiter.Text = "Traiter";
+            this.buttonTraiter.UseVisualStyleBackColor = true;
+            this.buttonTraiter.Click += new System.EventHandler(this.buttonTraiter_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1924, 1164);
+            this.Controls.Add(this.buttonTraiter);
+            this.Controls.Add(this.buttonOuvrir);
             this.Controls.Add(this.lblConnection);
             this.Controls.Add(this.tbCom);
             this.Controls.Add(this.labelDécision);
@@ -202,6 +226,8 @@
         private System.Windows.Forms.ToolStripMenuItem interfaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem acquisitionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem controleRobotToolStripMenuItem;
+        private System.Windows.Forms.Button buttonOuvrir;
+        private System.Windows.Forms.Button buttonTraiter;
     }
 }
 
