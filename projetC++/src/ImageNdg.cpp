@@ -250,17 +250,17 @@ CImageNdg& CImageNdg::operator=(const CImageNdg& im) {
 return *this;
 }
 
-//__declspec(dllexport) void* creerHistoApartirTableau(int hauteur, int largeur, unsigned char* pixels, bool enregistrementCSV)
-//{	// Créer une instance de CImageNdg avec les dimensions de l'image
-//	CImageNdg* image = new CImageNdg(hauteur, largeur, -1); // -1 pour indiquer qu'on ne spécifie pas une valeur par défaut
-//
-//	// Remplir l'image avec les données des pixels
-//	for (int i = 0; i < hauteur * largeur; ++i) {
-//		image->m_pucPixel[i] = pixels[i]; // Copier les pixels dans l'image
-//	}
-//	image->histogramme(true);
-//	// Retourner l'instance de l'image
-//}
+extern "C" __declspec(dllexport) void* creerhistoapartirtableau(int hauteur, int largeur, unsigned char* pixels, bool enregistrementcsv)
+{	// créer une instance de cimagendg avec les dimensions de l'image
+	CImageNdg* image = new CImageNdg(hauteur, largeur, -1); // -1 pour indiquer qu'on ne spécifie pas une valeur par défaut
+
+	// remplir l'image avec les données des pixels
+	for (int i = 0; i < hauteur * largeur; ++i) {
+		image->m_pucPixel[i] = pixels[i]; // copier les pixels dans l'image
+	}
+	image->histogramme(true);
+	// retourner l'instance de l'image
+}
 
 // Fonction pour libérer la mémoire (à utiliser depuis C# pour éviter les fuites mémoire)
 extern "C" __declspec(dllexport) void libererImage(void* image) {

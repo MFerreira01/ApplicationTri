@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +15,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Net;
 using System.Net.Sockets;
 using smcs;
+using System.IO.Ports;
 
 using System.IO;
 using System.Drawing.Drawing2D;
@@ -54,6 +55,9 @@ namespace ApplicationTri
             m_ipAdrServeur = IPAddress.Parse("192.168.56.2");  // Adresse locale
             m_ipAdrClient = IPAddress.Parse("192.168.1.150");   // Adresse distante
             m_numPort = 8001;
+
+            // arduino
+            serialPortArduino.Open();
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -634,4 +638,6 @@ namespace ApplicationTri
         }
 
     }
-}
+
+
+    }

@@ -1,4 +1,4 @@
-﻿namespace ApplicationTri
+namespace ApplicationTri
 {
     partial class Form1
     {
@@ -47,25 +47,26 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCam)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCapture)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // pbImageCam
             // 
             this.pbImageCam.Enabled = false;
-            this.pbImageCam.Location = new System.Drawing.Point(12, 67);
-            this.pbImageCam.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pbImageCam.Location = new System.Drawing.Point(9, 54);
+            this.pbImageCam.Margin = new System.Windows.Forms.Padding(2);
             this.pbImageCam.Name = "pbImageCam";
-            this.pbImageCam.Size = new System.Drawing.Size(700, 600);
+            this.pbImageCam.Size = new System.Drawing.Size(525, 480);
             this.pbImageCam.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbImageCam.TabIndex = 0;
             this.pbImageCam.TabStop = false;
             // 
             // BoutonACQ
             // 
-            this.BoutonACQ.Location = new System.Drawing.Point(874, 506);
-            this.BoutonACQ.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BoutonACQ.Location = new System.Drawing.Point(656, 405);
+            this.BoutonACQ.Margin = new System.Windows.Forms.Padding(2);
             this.BoutonACQ.Name = "BoutonACQ";
-            this.BoutonACQ.Size = new System.Drawing.Size(133, 66);
+            this.BoutonACQ.Size = new System.Drawing.Size(100, 53);
             this.BoutonACQ.TabIndex = 1;
             this.BoutonACQ.Text = "ACQ";
             this.BoutonACQ.UseVisualStyleBackColor = true;
@@ -74,9 +75,10 @@
             // labelAdressIP
             // 
             this.labelAdressIP.AutoSize = true;
-            this.labelAdressIP.Location = new System.Drawing.Point(825, 176);
+            this.labelAdressIP.Location = new System.Drawing.Point(619, 141);
+            this.labelAdressIP.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelAdressIP.Name = "labelAdressIP";
-            this.labelAdressIP.Size = new System.Drawing.Size(70, 25);
+            this.labelAdressIP.Size = new System.Drawing.Size(51, 20);
             this.labelAdressIP.TabIndex = 2;
             this.labelAdressIP.Text = "label1";
             // 
@@ -87,10 +89,10 @@
             // 
             // pbImageCapture
             // 
-            this.pbImageCapture.Location = new System.Drawing.Point(12, 697);
-            this.pbImageCapture.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pbImageCapture.Location = new System.Drawing.Point(9, 558);
+            this.pbImageCapture.Margin = new System.Windows.Forms.Padding(2);
             this.pbImageCapture.Name = "pbImageCapture";
-            this.pbImageCapture.Size = new System.Drawing.Size(700, 600);
+            this.pbImageCapture.Size = new System.Drawing.Size(525, 480);
             this.pbImageCapture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbImageCapture.TabIndex = 4;
             this.pbImageCapture.TabStop = false;
@@ -98,30 +100,30 @@
             // labelDécision
             // 
             this.labelDécision.AutoSize = true;
-            this.labelDécision.Location = new System.Drawing.Point(886, 616);
+            this.labelDécision.Location = new System.Drawing.Point(652, 558);
+            this.labelDécision.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelDécision.Name = "labelDécision";
-            this.labelDécision.Size = new System.Drawing.Size(95, 25);
+            this.labelDécision.Size = new System.Drawing.Size(70, 20);
             this.labelDécision.TabIndex = 5;
             this.labelDécision.Text = "Décision";
             // 
             // tbCom
             // 
-            this.tbCom.Location = new System.Drawing.Point(1387, 12);
-            this.tbCom.Margin = new System.Windows.Forms.Padding(4);
+            this.tbCom.Location = new System.Drawing.Point(1040, 10);
             this.tbCom.Multiline = true;
             this.tbCom.Name = "tbCom";
             this.tbCom.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbCom.Size = new System.Drawing.Size(520, 515);
+            this.tbCom.Size = new System.Drawing.Size(391, 413);
             this.tbCom.TabIndex = 8;
             // 
             // lblConnection
             // 
             this.lblConnection.AutoSize = true;
             this.lblConnection.BackColor = System.Drawing.Color.White;
-            this.lblConnection.Location = new System.Drawing.Point(825, 114);
-            this.lblConnection.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblConnection.Location = new System.Drawing.Point(619, 91);
+            this.lblConnection.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblConnection.Name = "lblConnection";
-            this.lblConnection.Size = new System.Drawing.Size(228, 25);
+            this.lblConnection.Size = new System.Drawing.Size(167, 20);
             this.lblConnection.TabIndex = 11;
             this.lblConnection.Text = "Connection en cours...";
             // 
@@ -184,7 +186,7 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1924, 1164);
             this.Controls.Add(this.buttonTraiter);
@@ -198,7 +200,7 @@
             this.Controls.Add(this.pbImageCam);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "ApplicationTri";
             this.Load += new System.EventHandler(this.OnLoad);
@@ -206,6 +208,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbImageCapture)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
