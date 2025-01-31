@@ -20,7 +20,7 @@ namespace ApplicationTri
 
 
         // Déclaration de la fonction native sans paramètres par défaut
-        [DllImport("DllProj.dll", EntryPoint = "histogramme", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("DllProj.dll", EntryPoint = "histogramme", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr histogramme(bool enregistrementCSV);
 
         public IntPtr HistogrammeCS(bool enregistrementCSV = false)
@@ -29,18 +29,18 @@ namespace ApplicationTri
             return Img;
         }
 
-        [DllImport("DllProj.dll", EntryPoint = "creerHistogramme", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("DllProj.dll", EntryPoint = "creerHistogramme", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr creerHistogramme(bool enregistrementCSV);
 
-        [DllImport("DllProj.dll", EntryPoint = "libererTableau", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("DllProj.dll", EntryPoint = "libererTableau", CallingConvention = CallingConvention.StdCall)]
         public static extern void libererTableau(IntPtr tableau);
 
 
-        [DllImport("DllProj.dll", EntryPoint = "creerHistoApartirTableau", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("DllProj.dll", EntryPoint = "creerHistoApartirTableau", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr creerHistoApartirTableau(int hauteur, int largeur, byte[] pixels, bool enregistrementCSV);
 
 
-        [DllImport("DllProj.dll", EntryPoint = "libererImage", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("DllProj.dll", EntryPoint = "libererImage", CallingConvention = CallingConvention.StdCall)]
         private static extern void LibererImage(IntPtr image);
 
         // Méthode publique pour appeler l'histogramme à partir d'un tableau

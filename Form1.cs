@@ -15,6 +15,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Net;
 using System.Net.Sockets;
 using smcs;
+using System.IO.Ports;
 
 
 namespace ApplicationTri
@@ -40,6 +41,8 @@ namespace ApplicationTri
         private Bitmap bufferedImage;
         private ClTraitementIm Histogramme;
 
+        private byte[] ImageData;
+
         public Form1()
         {
             InitializeComponent();
@@ -48,6 +51,9 @@ namespace ApplicationTri
             m_ipAdrServeur = IPAddress.Parse("192.168.56.2");  // Adresse locale
             m_ipAdrClient = IPAddress.Parse("192.168.1.150");   // Adresse distante
             m_numPort = 8001;
+
+            // arduino
+            serialPortArduino.Open();
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -440,6 +446,26 @@ namespace ApplicationTri
 
                    // Faire quelque chose avec `resultat`
                    Console.WriteLine("Histogramme calculé et instance native créée.");*/
+<<<<<<< Updated upstream
+=======
+
+                // envoi de l'information à l'Arduino
+                // envoi des coordonnées du CG et de l'angle
+                double x=0, y=0;
+                double angle = 0; // valeurs à récupérer
+
+                string data = $"{x},{y},{angle}\n";
+
+                serialPortArduino.WriteLine(data); // envoi à l'Arduino
+
+                // si verdict : objet blanc
+                if(obj==true)
+                    serialPortArduino.Write("A"); 
+
+                // si verdict : objet noir
+                serialPortArduino.Write("a");
+
+>>>>>>> Stashed changes
             }
             else
             {
@@ -464,5 +490,125 @@ namespace ApplicationTri
             }
         }
 
+        // exemple histogramme 
+
+        
+        private void btnCalculateHistogram_Click(object sender, EventArgs e)
+        {
+            //if (ImageData == null)
+            //{
+            //    MessageBox.Show("Veuillez charger une image d'abord.");
+            //    return;
+            //}
+
+            int largeur = pictureBox1.Image.Width;
+            int hauteur = pictureBox1.Image.Height;
+
+            // Appeler la fonction native pour créer l'histogramme
+            IntPtr histogramPointer = ClTraitementIm.creerHistoApartirTableau(hauteur, largeur, ImageData, enregistrementCSV: false);
+
+            // Récupérer les résultats de l'histogramme
+            if (histogramPointer == IntPtr.Zero)
+            {
+                MessageBox.Show("Erreur lors du calcul de l'histogramme.");
+                return;
+            }
+
+            // Convertir le pointeur en tableau de résultats
+            long[] histogram = new long[256 * 3]; // 3 plans de 256 valeurs chacun
+            Marshal.Copy(histogramPointer, histogram, 0, histogram.Length);
+
+            // Libérer la mémoire allouée par la DLL
+            ClTraitementIm.libererTableau(histogramPointer);
+
+            // Afficher les résultats de l'histogramme
+            DisplayHistogram(histogram);
+        }
+
+        // Fonction pour afficher l'histogramme dans un contrôle ou un fichier
+        private void DisplayHistogram(long[] histogram)
+        {
+            string result = "Histogramme des plans R, G, B :\n";
+
+            for (int i = 0; i < 256; i++)
+            {
+                result += $"Niveau {i}: R={histogram[3 * i]}, G={histogram[3 * i + 1]}, B={histogram[3 * i + 2]}\n";
+            }
+
+            MessageBox.Show(result, "Résultats de l'histogramme");
+        }
+
+        private byte[] ConvertImageToByteArray(Bitmap bmp)
+        {
+            int largeur = bmp.Width;
+            int hauteur = bmp.Height;
+
+            // Créer un tableau pour stocker les données de l'image
+            byte[] imageData = new byte[largeur * hauteur * 3]; // 3 bytes pour chaque pixel (RGB)
+
+            // Verrouiller les bits de l'image pour accéder directement aux données de pixels
+            BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, largeur, hauteur), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+
+            // Accéder aux données de pixels
+            IntPtr ptr = bitmapData.Scan0;
+            Marshal.Copy(ptr, imageData, 0, imageData.Length);
+
+            // Déverrouiller les bits après l'accès
+            bmp.UnlockBits(bitmapData);
+
+            return imageData;
+        }
+        private void boutOuvrir_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    Bitmap bmp = new Bitmap(openFileDialog1.FileName);
+                    pictureBox1.Image = bmp;
+
+                    ImageData = ConvertImageToByteArray(bmp);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("erreur d'ouverture"+ex.Message);
+                }
+            }
+
+        }
+
+        private void boutHisto_Click(object sender, EventArgs e)
+        {
+            if (ImageData == null)
+            {
+                MessageBox.Show("Veuillez charger une image d'abord.");
+                return;
+            }
+
+            int largeur = pictureBox1.Image.Width;
+            int hauteur = pictureBox1.Image.Height;
+
+            // Appeler la fonction native pour créer l'histogramme
+            IntPtr histogramPointer = ClTraitementIm.creerHistoApartirTableau(hauteur, largeur, ImageData, enregistrementCSV:false);
+
+            // Récupérer les résultats de l'histogramme
+            if (histogramPointer == IntPtr.Zero)
+            {
+                MessageBox.Show("Erreur lors du calcul de l'histogramme.");
+                return;
+            }
+
+            // Convertir le pointeur en tableau de résultats
+            long[] histogram = new long[256 * 3]; // 3 plans de 256 valeurs chacun
+            Marshal.Copy(histogramPointer, histogram, 0, histogram.Length);
+
+            // Libérer la mémoire allouée par la DLL
+            ClTraitementIm.libererTableau(histogramPointer);
+
+            // Afficher les résultats de l'histogramme
+            DisplayHistogram(histogram);
+        }
     }
-}
+
+
+    }
