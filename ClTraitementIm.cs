@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ApplicationTri
 {
@@ -40,9 +41,26 @@ namespace ApplicationTri
 
             return processed;
         }
-        public static Bitmap StretchImageDynamic(string imagePath)
+
+        public static Bitmap ConvertirImageFormat(Bitmap image)
         {
-            Bitmap bitmap = new Bitmap(imagePath);
+            if (image.PixelFormat == System.Drawing.Imaging.PixelFormat.Format8bppIndexed ||
+                image.PixelFormat == System.Drawing.Imaging.PixelFormat.Format4bppIndexed ||
+                image.PixelFormat == System.Drawing.Imaging.PixelFormat.Format1bppIndexed)
+            {
+                Bitmap newImage = new Bitmap(image.Width, image.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                using (Graphics g = Graphics.FromImage(newImage))
+                {
+                    g.DrawImage(image, 0, 0);
+                }
+                image = newImage; // Remplace l'image avec la nouvelle version
+            }
+            return image;
+        }
+
+        public static Bitmap StretchImageDynamic(Bitmap bitmap)
+        {
+/*            Bitmap bitmap = new Bitmap(imagePath);*/
 
             // Trouver les niveaux de gris min et max
             int minGray = 255;
@@ -62,6 +80,7 @@ namespace ApplicationTri
                 }
             }
 
+            bitmap = ConvertirImageFormat(bitmap);
             // Deuxième boucle pour appliquer le réajustement linéaire
             for (int y = 0; y < bitmap.Height; y++)
             {
@@ -82,6 +101,45 @@ namespace ApplicationTri
             }
             return bitmap;
         }
+        public static Bitmap AjusterNDG(Bitmap bitmap)
+        {
+            // Trouver les niveaux de gris min et max
+            int max = 0;
+
+            // Première boucle pour déterminer les min et max
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    Color pixelColor = bitmap.GetPixel(x, y);
+
+                    int grayLevel = (int)(0.299 * pixelColor.R + 0.587 * pixelColor.G + 0.114 * pixelColor.B);
+
+                    if (grayLevel > max) max = grayLevel;
+                }
+            }
+
+            // Deuxième boucle pour appliquer le réajustement linéaire
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    Color pixelColor = bitmap.GetPixel(x, y);
+
+                    int grayLevel = (int)(0.299 * pixelColor.R + 0.587 * pixelColor.G + 0.114 * pixelColor.B);
+                    if (grayLevel > max - 20)
+                    {
+                        // Créer la couleur ajustée (en niveaux de gris)
+                        Color stretchedColor = Color.FromArgb(255, 255, 255);
+
+                        bitmap.SetPixel(x, y, stretchedColor);  // Mettre à jour le pixel de l'image
+
+                    }
+                }
+            }
+            return bitmap;
+        }
+
         public static Bitmap StretchDynamic(string imagePath)
         {
             Bitmap bitmap = new Bitmap(imagePath);
@@ -183,6 +241,7 @@ namespace ApplicationTri
 
             return new PointF(centerX, centerY);
         }
+
         // Extraction des pixels d'intérêt
         public static List<PointF> GetPointsFromBitmap(Bitmap image, Color targetColor)
         {

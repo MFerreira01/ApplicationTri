@@ -17,6 +17,7 @@ using System.Net.Sockets;
 using smcs;
 
 using System.IO;
+using System.Drawing.Drawing2D;
 
 
 namespace ApplicationTri
@@ -40,7 +41,8 @@ namespace ApplicationTri
 
         private Bitmap capturedImage; // Variable pour stocker l'image capturée
         private Bitmap bufferedImage;
-        /*        private ClTraitementIm Histogramme;*/
+
+        bool obj; // obj blanc = True else = False
 
         string imagePath;
 
@@ -197,26 +199,33 @@ namespace ApplicationTri
             return bitmap;
         }
        
-        public static byte[] BitmapToByteArray(Bitmap bitmap)
-        // On transforme l'image Bitmap en tableau pour pouvoir créer une imageNDG et utiliser la fonction Histogramme
-        {
-            int width = bitmap.Width;
-            int height = bitmap.Height;
-
-            // Verifiez que l'image est en niveau de gris, ou effectuez la conversion si nécessaire
-            BitmapData data = bitmap.LockBits(new Rectangle(0, 0, width, height),
-                                              ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
-
-            int bytes = data.Stride * data.Height;
-            byte[] pixelData = new byte[bytes];
-            Marshal.Copy(data.Scan0, pixelData, 0, bytes);
-            bitmap.UnlockBits(data);
-
-            return pixelData;
-        }
-
         static double CalculerMoyenneNDG(Bitmap image)
         {
+            double sommeNDG = 0;
+            int totalPixels = image.Width * image.Height;
+
+            // Parcourir tous les pixels de l'image
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    // Obtenir la couleur du pixel
+                    Color pixelColor = image.GetPixel(x, y);
+
+                    // Calculer le niveau de gris du pixel (moyenne des composantes RGB)
+                    int niveauGris = (int)((pixelColor.R + pixelColor.G + pixelColor.B) / 3.0);
+
+                    // Ajouter à la somme des niveaux de gris
+                    sommeNDG += niveauGris;
+                }
+            }
+
+            // Calculer la moyenne
+            return sommeNDG / totalPixels;
+        }
+        static double CalculerMoyenneNDGPath(String imagePath)
+        {
+            Bitmap image = new Bitmap(imagePath);
             double sommeNDG = 0;
             int totalPixels = image.Width * image.Height;
 
@@ -377,59 +386,7 @@ namespace ApplicationTri
 
             return message;
         }
-        private void ACQ()
-        {
-            try
-            {
-                string message = recevoirInfo();
-                if (message != "1")
-                {
-                    MessageBox.Show("Message reçu != 1, l'acquisition ne sera pas lancé");
-                }
-                else
-                {
-                    // Capture une image
-                    // Essayer de capturer une image
-                    try
-                    {
-                        capturedImage = CaptureImage();
-                    }
-                    // Si le buffer est vide et que l'on ne peut donc pas prendre l'image, on prend la dernière image bufferisé (nouvelle image toutes les 5 secondes)
-                    catch
-                    {
-                        capturedImage = bufferedImage;
-                    }
-
-                    // Affiche l'image capturée dans le PictureBox
-                    if (capturedImage != null)
-                    {
-                        GetImg(pbImageCam, capturedImage);
-                        pbImageCapture.Image = capturedImage;
-                        MessageBox.Show("Image capturée et stockée en mémoire !");
-                        bool obj;
-
-                        double moyenneNDG = CalculerMoyenneNDG(capturedImage);
-
-                        if (moyenneNDG > 128)
-                        {
-                            labelDécision.Text = "Décision : Objet blanc";
-                            obj = true;
-                        }
-                        else
-                        {
-                            labelDécision.Text = "Décision : Objet noir";
-                            obj = false;
-                        }
-                        envoieInfo(obj.ToString());
-                    }
-                }
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-        }
-
+       
         private void SaveImage(Bitmap image, string filePath)
         {
             try
@@ -459,7 +416,7 @@ namespace ApplicationTri
                 GetImg(pbImageCam, capturedImage);
                 pbImageCapture.Image = capturedImage;
                 MessageBox.Show("Image capturée et stockée en mémoire !");
-                bool obj;
+                
 
                 double moyenneNDG = CalculerMoyenneNDG(capturedImage);
 
@@ -477,15 +434,6 @@ namespace ApplicationTri
                 // sauvegarder l'image
                 SaveImage(capturedImage, $"C:\\Users\\maria\\Downloads\\imgProjVision\\imgCapturee_{m_numImg}.bmp");
                 m_numImg++;
-
-                /*envoieInfo(obj.ToString());*/
-
-                // Calculer l'histogramme
-
-                /*  IntPtr resultat = Histogramme.HistogrammeAPartirTableau(capturedImage.Height, capturedImage.Width, BitmapToByteArray(capturedImage), enregistrementCSV: true);
-
-                   // Faire quelque chose avec `resultat`
-                   Console.WriteLine("Histogramme calculé et instance native créée.");*/
             }
             else
             {
@@ -510,6 +458,12 @@ namespace ApplicationTri
             }
         }
 
+        static void WriteJsonFile(string filePath, double x, double y, double angle)
+        {
+            string jsonString = "{\r\n \"x\": "+ x + ",\r\n\"y\":" + y + ",\r\n\"angle\":" + angle + " \r\n}}";
+            File.WriteAllText(filePath, jsonString);
+        }
+
         System.Drawing.Image img;
         private void buttonOuvrir_Click(object sender, EventArgs e)
         {
@@ -532,11 +486,42 @@ namespace ApplicationTri
 
         private void buttonTraiter_Click(object sender, EventArgs e)
         {
-            Bitmap img = ClTraitementIm.StretchImageDynamic(imagePath);
-            pbImageCapture.Image = img;
-            pbImageCapture.Image = ClTraitementIm.ProcessImage(img, 40);
-            img = ClTraitementIm.ProcessImage(img, 40);
-            img = ClTraitementIm.inverser(img);
+            MessageBox.Show("traitement");
+            Bitmap img = CaptureImage();
+            MessageBox.Show("image");
+
+            // Affiche l'image capturée dans le PictureBox
+            if (img != null)
+            {
+                pbImageCapture.Image = img;
+
+                double moyenneNDG = CalculerMoyenneNDG(img);
+
+                MessageBox.Show("objet");
+
+                obj_noir(img);
+                /*if (moyenneNDG > 128)
+                {
+                    labelDécision.Text = "Décision : Objet blanc";
+                    obj = true;
+                    obj_blanc(img);
+                }
+                else
+                {
+                    labelDécision.Text = "Décision : Objet noir";
+                    obj = false;
+                    obj_noir(img);
+                }*/
+
+            }
+        }
+
+        private void obj_blanc(Bitmap image)
+        {
+
+            MessageBox.Show("début traitement");
+            Bitmap img = ClTraitementIm.AjusterNDG(image);
+            pbImageCapture.Image = ClTraitementIm.AjusterNDG(image);
 
             // Détection des pixels blancs
             List<PointF> points = ClTraitementIm.GetPointsFromBitmap(img, Color.White);
@@ -571,7 +556,70 @@ namespace ApplicationTri
             double[] axePrincipal = { vx, vy };
             double angle = ClTraitementIm.CalculerAngleVerticale(axePrincipal);
 
-            MessageBox.Show($"L'angle entre la verticale et l'axe principal est : {angle} degrés \n centre de gravité : " + ClTraitementIm.GetCenterOfGravity(img));
+            PointF centerOfGravity = ClTraitementIm.GetCenterOfGravity(img);
+            double x = centerOfGravity.X;
+            double y = centerOfGravity.Y;
+
+            MessageBox.Show($"L'angle entre la verticale et l'axe principal est : {angle} degrés \n centre de gravité : " + centerOfGravity);
+
+            WriteJsonFile("C:\\Users\\maria\\Downloads\\imgProjVision\\coordonnée.json", x, y, angle);
+            // Dessiner l'arc sur l'image
+            string sortie = "C:\\Users\\maria\\Downloads\\imgProjVision\\image_modifiee_avec_arc.jpg";
+            int radius = 150;
+            ClTraitementIm.DrawAngleArcOnImage(img, axePrincipal, angle, radius, sortie);
+        }
+
+        private void obj_noir(Bitmap image)
+        {
+            MessageBox.Show("début traitement");
+
+            Bitmap img = ClTraitementIm.StretchImageDynamic(image);
+            pbImageCapture.Image = img;
+            pbImageCapture.Image = ClTraitementIm.ProcessImage(img, 40);
+            img = ClTraitementIm.ProcessImage(img, 40);
+            img = ClTraitementIm.inverser(img);
+    
+            // Détection des pixels blancs
+            List<PointF> points = ClTraitementIm.GetPointsFromBitmap(img, Color.White);
+
+            if (points.Count == 0)
+            {
+                Console.WriteLine("Aucun point blanc détecté.");
+                return;
+            }
+
+            // Étape 1: Calcul de la moyenne
+            double[] mean = ClTraitementIm.CalculateMean(points);
+
+            // Étape 2: Centrage des données
+            double[,] centeredData = ClTraitementIm.CenterData(points, mean);
+
+            // Étape 3: Calcul de la matrice de covariance
+            double[,] covarianceMatrix = ClTraitementIm.ComputeCovarianceMatrix(centeredData);
+
+            // Étape 4: Décomposition propre
+            (double[] eigenValues, double[,] eigenVectors) = ClTraitementIm.EigenDecomposition(covarianceMatrix);
+
+            /// Étape 5: Dessin des axes principaux
+            string outputPath = "";
+            pbImageCapture.Image = ClTraitementIm.DrawAxesOnImage(img, mean, eigenVectors, outputPath, saveToFile: false);
+
+            // Récupérer l'axe principal (le premier vecteur propre)
+            double vx = eigenVectors[0, 0]; // Composante x du vecteur propre principal
+            double vy = eigenVectors[1, 0]; // Composante y du vecteur propre principal
+
+            // Calculer l'angle entre la verticale et l'axe principal
+            double[] axePrincipal = { vx, vy };
+            double angle = ClTraitementIm.CalculerAngleVerticale(axePrincipal);
+           
+            PointF centerOfGravity = ClTraitementIm.GetCenterOfGravity(img);
+            double x = centerOfGravity.X;
+            double y = centerOfGravity.Y;
+
+
+            MessageBox.Show($"L'angle entre la verticale et l'axe principal est : {angle} degrés \n centre de gravité : " + centerOfGravity);
+
+            WriteJsonFile("C:\\Users\\maria\\Downloads\\imgProjVision\\coordonnée.json", x, y, angle);
 
             // Dessiner l'arc sur l'image
             string sortie = "C:\\Users\\maria\\Downloads\\imgProjVision\\image_modifiee_avec_arc.jpg";
